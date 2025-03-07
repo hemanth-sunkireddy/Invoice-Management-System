@@ -4,7 +4,7 @@ const cors = require("cors");
 const app = express();
 
 const corsOptions = {
-  origin: ["https://swipe-invoice-management.vercel.app", "http://localhost:3000"],
+  origin: ["https://swipe-invoice-management-frontend.vercel.app/", "http://localhost:3000"],
   methods: "GET,POST,PUT,DELETE",
   allowedHeaders: "Content-Type,Authorization",
 };

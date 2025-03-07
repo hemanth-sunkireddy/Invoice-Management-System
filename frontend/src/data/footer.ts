@@ -7,31 +7,31 @@ export const footerDetails: {
     telephone: string;
     socials: ISocials;
 } = {
-    subheading: "Empowering businesses with cutting-edge financial technology solutions.",
+    subheading: "Create your Invoices, Purchases & Quotations in less than 10 seconds. Share on WhatsApp with payment links and get paid faster!",
     quickLinks: [
         {
-            text: "Features",
-            url: "#features"
+            text: "Code Documentation",
+            url: "https://github.com/hemanth-sunkireddy/Swipe-Invoice-Management/wiki"
         },
         {
-            text: "Pricing",
-            url: "#pricing"
+            text: "Github Code Link",
+            url: "https://github.com/hemanth-sunkireddy/Swipe-Invoice-Management"
         },
         {
-            text: "Testimonials",
-            url: "#testimonials"
+            text: "Backend Server URL",
+            url: "https://swipe-invoice-management.vercel.app/"
         }
     ],
-    email: 'address@yoursite.com',
-    telephone: '+1 (123) 456-7890',
-    socials: {
-        // github: 'https://github.com',
-        // x: 'https://twitter.com/x',
-        twitter: 'https://twitter.com/Twitter',
-        facebook: 'https://facebook.com',
-        // youtube: 'https://youtube.com',
-        linkedin: 'https://www.linkedin.com',
-        // threads: 'https://www.threads.net',
-        instagram: 'https://www.instagram.com',
-    }
+    // email: 'address@yoursite.com',
+    // telephone: '+1 (123) 456-7890',
+    // socials: {
+    //     // github: 'https://github.com',
+    //     // x: 'https://twitter.com/x',
+    //     twitter: 'https://twitter.com/Twitter',
+    //     facebook: 'https://facebook.com',
+    //     // youtube: 'https://youtube.com',
+    //     linkedin: 'https://www.linkedin.com',
+    //     // threads: 'https://www.threads.net',
+    //     instagram: 'https://www.instagram.com',
+    // }
 }
