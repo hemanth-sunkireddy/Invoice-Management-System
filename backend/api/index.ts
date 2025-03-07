@@ -1,8 +1,21 @@
 const express = require("express");
+const cors = require("cors");
+
 const app = express();
 
-app.get("/", (req, res) => res.send("Swipe Backend"));
+const corsOptions = {
+  origin: ["https://swipe-invoice-management.vercel.app", "http://localhost:3000"],
+  methods: "GET,POST,PUT,DELETE",
+  allowedHeaders: "Content-Type,Authorization",
+};
 
-app.listen(3000, () => console.log("Server ready on port 3000."));
+app.use(cors(corsOptions));
+
+app.get("/", (req, res) => res.send("Swipe Backend"));
+app.get('/connection-check', (req, res) => {
+  res.json({ message: 'Hello, Server Connection Successfully established.' });
+});
+
+app.listen(4000, () => console.log("Server ready on port 4000."));
 
 module.exports = app;
