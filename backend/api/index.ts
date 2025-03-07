@@ -25,6 +25,9 @@ app.get("/", (req, res) => res.send("Swipe Backend"));
 app.get('/invoices', (req, res) => {
   res.json(invoices);
 });
+app.post('/file-upload', (req, res) => {
+  res.json({message: "FILE UPLoad successful"});
+});
 
 app.listen(4000, () => console.log("Server ready on port 4000."));
 
