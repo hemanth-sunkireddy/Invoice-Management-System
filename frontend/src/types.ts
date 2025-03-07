@@ -51,3 +51,13 @@ export interface ISocials {
     x?: string;
     [key: string]: string | undefined;
 }
+
+export interface Invoice{
+    serialNumber: number,
+    customerName: string,
+    productName: string,
+    quantity: number,
+    tax: number,
+    totalAmount: number,
+    date: Date
+}
