@@ -9,7 +9,7 @@ var productsRouter = require('../routes/products.js');
 var customersRouter = require('../routes/customers.js');
 
 // Mongo Connection
-const { connectToMongo } = require("../config.js");
+const { connectToMongo } = require("../config/mongodb.js");
 
 const corsOptions = {
   origin: ["https://swipe-invoice-management-frontend.vercel.app/", "http://localhost:3000"],
