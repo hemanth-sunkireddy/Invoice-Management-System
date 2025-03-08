@@ -1,6 +1,6 @@
 'use client'
 import type { Customers } from "@/types";
-import { backendURL_Customers, backendURL_Invoices } from "../../../config";
+import { backendURL_Customers} from "../../../config";
 import { useEffect, useState } from "react";
 const Customers: React.FC = () => {
   const [customers, setCustomers] = useState<Customers[]>([]);

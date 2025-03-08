@@ -1,6 +1,6 @@
 'use client'
 import type { Products } from "@/types";
-import { backendURL_Invoices, backendURL_Products } from "../../../config";
+import { backendURL_Products } from "../../../config";
 import { useEffect, useState } from "react";
 const Products: React.FC = () => {
   const [products, setProducts] = useState<Products[]>([]);
