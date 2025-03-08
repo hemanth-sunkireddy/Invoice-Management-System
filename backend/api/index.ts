@@ -19,7 +19,7 @@ app.use(cors(corsOptions));
 
 app.get("/", (req, res) => res.send("Swipe Backend"));
 app.use('/invoices', invoicesRouter);
-app.post('/file-upload', fileUploadRouter);
+app.use('/file-upload', fileUploadRouter);
 app.use('/products', productsRouter);
 app.use('/customers', customersRouter);
 

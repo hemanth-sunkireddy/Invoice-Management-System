@@ -1,41 +1,24 @@
 'use client'
+import { useState } from "react";
 import { backendURL_FileUpload } from "../../../config";
 
 const FileUpload: React.FC = () => {
+  const [fileData, setFileData] = useState<Record<string, any> | null>(null);
   const fileSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const formData = new FormData();
     const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
 
     if (fileInput.files && fileInput.files.length > 0) {
       const file = fileInput.files[0];
 
-      const toBase64 = (file: File): Promise<string> => {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.readAsDataURL(file);
-          reader.onload = () => resolve(reader.result as string);
-          reader.onerror = (error) => reject(error);
-        });
-      };
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('fileName', file.name);
+      formData.append('fileType', file.type);
+      formData.append('fileSize', file.size.toString());
 
       try {
-        const base64Content = await toBase64(file);
-
-
-        formData.append('fileName', file.name);
-        formData.append('fileType', file.type);
-        formData.append('fileSize', file.size.toString());
-        formData.append('fileContent', base64Content);
-
-        console.log('File details:', {
-          name: file.name,
-          type: file.type,
-          size: file.size,
-          base64Content,
-        });
-
         const response = await fetch(backendURL_FileUpload, {
           method: 'POST',
           body: formData,
@@ -47,6 +30,7 @@ const FileUpload: React.FC = () => {
 
         const result = await response.json();
         console.log('Success:', result);
+        setFileData(result);
       } catch (error) {
         console.error('Error:', error);
       }
@@ -61,6 +45,16 @@ const FileUpload: React.FC = () => {
         <p>File Upload Page</p>
         <input type="file" name="file" />
         <button type="submit" className="p-2 bg-blue-500 text-white rounded">Submit</button>
+        {fileData && (
+          <div className="mt-4 p-4 border rounded shadow-md w-full max-w-md">
+            <h3 className="text-lg font-bold mb-2">Uploaded File Details:</h3>
+            <ul>
+              {Object.entries(fileData).map(([key, value]) => (
+                <li key={key}><strong>{key}:</strong> {value}</li>
+              ))}
+            </ul>
+          </div>
+        )}
       </form>
     </section>
   );
