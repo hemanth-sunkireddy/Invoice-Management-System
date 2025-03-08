@@ -18,23 +18,29 @@ router.post('/', upload.single('file'), async (req, res) => {
     const result = await extractInvoice(model, fileBuffer, mimeType);
     const invoice_num = result.invoice_number || "";
     const invoice_date = result.invoice_date || "";
-    const customer_name = result.customer_name || "";
-    console.log("CUSTOMER NAME: ", result.customer_name);
+    const invoice_tax = result.invoice_tax || "";
+    const total_amount = result.total_amount || "";
+    console.log("INVOICE NUM: ", invoice_num);
+    console.log("INVOICE TAX: ", invoice_tax);
+    console.log("TOTAL AMOUNT: ", total_amount);
+    console.log("INVOICE DATE: ", invoice_date);
   
     const products = result.items || [];
-    const customer = result.customer_name ? {
-      customer_name: result.customer_name,
-      customer_gst: result.customer_gst,
-      place_of_supply: result.place_of_supply
+    const customer = result.consignee_name ? {
+      customer_name: result.consignee_name,
+      customer_mobile_number: result.consignee_mobile_number,
+      total_amount: total_amount
     } : {};
-
+    console.log(customer)
     const invoiceData = {
       invoice_num,
       invoice_date,
-      customer_name,
+      invoice_tax,
+      total_amount,
     };
 
-    await insertInvoice(invoiceData);
+    const invoiceUpdateStatus = await insertInvoice(invoiceData);
+    console.log("INVOICE DB UPDATE STATUS: ", invoiceUpdateStatus);
 
     const productUpdates = await Promise.all(products.map(updateProduct));
     const customerStatus = await updateCustomer(customer);
@@ -42,9 +48,6 @@ router.post('/', upload.single('file'), async (req, res) => {
     console.log(customerStatus)
     res.json({
       message: 'File upload and processing successful',
-      result,
-      productUpdates,
-      customerStatus
     });
   } catch (error) {
     console.error('Error processing request:', error);

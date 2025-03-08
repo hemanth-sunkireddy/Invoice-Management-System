@@ -53,15 +53,16 @@ export interface ISocials {
 }
 
 export interface Invoice {
-    customer_name: string,
     invoice_num: number,
-    invoice_date: string
+    invoice_date: string,
+    invoice_tax: string,
+    total_amount: string,
 }
 
 export interface Customers {
     customer_name: string,
     phone_number: number,
-    totPurchAmnt: number,
+    totalPurAmnt: number,
 }
 
 export interface Products {

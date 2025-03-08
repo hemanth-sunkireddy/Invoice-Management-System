@@ -57,14 +57,23 @@ const FileUpload: React.FC = () => {
       setSelectedFiles(Array.from(event.target.files));
     }
   };
+  const getSimplifiedFileType = (fileType: string) => {
+    if (fileType === "application/pdf") {
+      return "PDF";
+    }
+    if (fileType === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+      return "Excel (XLSX)";
+    }
+    return fileType.split("/")[1]; // Default: use the second part of the MIME type, e.g., image, text
+  };
 
   return (
-    <section className="relative flex flex-col items-center justify-center pb-0 pt-32 md:pt-40 px-5">
+    <section className="relative flex flex-col items-center justify-center pb-0 pt-32 md:pt-40">
       <form onSubmit={fileSubmit} className="w-full max-w-4xl">
-        <p className="text-center mb-8 text-lg font-bold">File Upload Page</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+        <p className="text-center mb-8 text-lg font-bold">File Upload</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 w-full">
           {/* Left Grid - File upload options */}
-          <div className="flex flex-col gap-4">
+          <div className="gap-4 grid grid-cols-1 md:grid-cols-2">
             <label className="flex items-center gap-2 p-4 bg-blue-500 text-white rounded cursor-pointer">
               <FaFilePdf /> Upload PDF
               <input type="file" accept="application/pdf" onChange={handleFileChange} className="hidden" />
@@ -78,18 +87,20 @@ const FileUpload: React.FC = () => {
               <input type="file" accept=".xlsx,.xls" onChange={handleFileChange} className="hidden" />
             </label>
             <label className="flex items-center gap-2 p-4 bg-blue-500 text-white rounded cursor-pointer">
-              <RiFileExcel2Fill /> Upload Multiple Excel
+              <RiFileExcel2Fill /> Upload Multiple
               <input type="file" accept=".xlsx,.xls" multiple onChange={handleFileChange} className="hidden" />
             </label>
           </div>
 
           {/* Right Grid - Content & Upload any file */}
-          <div className="flex flex-col gap-4 justify-between">
+          <div className="flex flex-col gap-4 justify-center items-center">
             <p className="text-center">Not sure the file extension? Don’t worry, upload here — we will take care of it.</p>
-            <label className="flex items-center gap-2 p-4 bg-blue-500 text-white rounded cursor-pointer">
-              <FaFile /> Upload Any File
-              <input type="file" multiple onChange={handleFileChange} className="hidden" />
-            </label>
+            <div className="flex justify-center items-center w-full">
+              <label className="flex items-center justify-center gap-2 p-4 bg-blue-500 text-white rounded cursor-pointer w-3/5">
+                <FaFile /> Upload any File type
+                <input type="file" multiple onChange={handleFileChange} className="hidden" />
+              </label>
+            </div>
           </div>
         </div>
 
@@ -108,9 +119,9 @@ const FileUpload: React.FC = () => {
               <tbody>
                 {selectedFiles.map((file) => (
                   <tr key={file.name}>
-                    <td className="border px-4 py-2">{file.name}</td>
-                    <td className="border px-4 py-2">{file.type}</td>
-                    <td className="border px-4 py-2">{file.size}</td>
+                    <td className="border px-4 py-2 text-center">{file.name}</td>
+                    <td className="border px-4 py-2 text-center">{getSimplifiedFileType(file.type)}</td>
+                    <td className="border px-4 py-2 text-center">{file.size}</td>
                   </tr>
                 ))}
               </tbody>
@@ -122,20 +133,25 @@ const FileUpload: React.FC = () => {
           <p className="text-center py-4">No file selected - please select a file</p>
         )}
 
-        <button type="submit" className="p-3 bg-blue-600 text-white rounded mt-8 w-full">
-          {isLoading ? 'Uploading...' : 'Submit'}
-        </button>
+        <div className="flex justify-center items-center mt-8">
+          <button
+            type="submit"
+            className="p-3 bg-blue-600 text-white rounded max-w-xs"
+          >
+            {isLoading ? 'Uploading, Please wait...' : 'Submit'}
+          </button>
+        </div>
       </form>
       {fileData && (
-          <div className="mt-4 p-4 border rounded shadow-md w-full">
-            <h3 className="text-lg font-bold mb-2 text-center">Uploaded File Details</h3>
-            <ul>
-              {Object.entries(fileData).map(([key, value]) => (
-                <li key={key}><strong>{key}:</strong> {value}</li>
-              ))}
-            </ul>
-          </div>
-        )}
+        <div className="mt-4 p-4 border rounded shadow-md w-full">
+        <h3 className="text-lg font-bold mb-2 text-center">Uploaded File Details</h3>
+          <ul>
+            {Object.entries(fileData).map(([key, value]) => (
+              <li key={key}><strong>{key}:</strong> {value}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </section>
   );
 };

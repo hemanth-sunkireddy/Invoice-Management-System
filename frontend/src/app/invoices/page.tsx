@@ -19,13 +19,16 @@ const Invoice: React.FC = () => {
   )
   return (
     <section className="flex items-center justify-center pb-20 pt-32 md:pt-40 px-5">
-      <p className="mb-10 pb-10 text-center">Invoice Page</p>
+      <div className="text-center">
+        <p className="mb-10 pb-10 text-center font-bold flex">Invoice Records</p>
+      </div>
       <hr />
       <table className="table-auto relative mt-20 pt-10">
         <thead>
           <tr>
             <th>Invoice Number</th>
-            <th>Customer Name</th>
+            <th>Invoice Tax</th>
+            <th>Total Amount</th>
             <th>Invoice Date</th>
           </tr>
         </thead>
@@ -34,7 +37,8 @@ const Invoice: React.FC = () => {
             invoices.map((invoice) => (
               <tr key={invoice.invoice_num}>
                 <td className="border px-4 py-2">{invoice.invoice_num}</td>
-                <td className="border px-4 py-2">{invoice.customer_name}</td>
+                <td className="border px-4 py-2">{invoice.total_amount}</td>
+                <td className="border px-4 py-2">{invoice.invoice_tax}</td>
                 <td className="border px-4 py-2">{invoice.invoice_date}</td>
               </tr>
             ))

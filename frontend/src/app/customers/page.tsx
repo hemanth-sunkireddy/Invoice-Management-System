@@ -34,7 +34,7 @@ const Customers: React.FC = () => {
               <tr key={customer.phone_number}>
                 <td className="border px-4 py-2">{customer.customer_name}</td>
                 <td className="border px-4 py-2">{customer.phone_number}</td>
-                <td className="border px-4 py-2">{customer.totPurchAmnt}</td>
+                <td className="border px-4 py-2">{customer.totalPurAmnt}</td>
               </tr>
             ))
           ) : (

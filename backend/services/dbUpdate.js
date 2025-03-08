@@ -23,7 +23,7 @@ const updateProduct = async (product) => {
 const updateCustomer = async (customer) => {
   const result = await customersCollection.updateOne(
     { customer_name: customer.customer_name || "undefined" },
-    { $set: { customer_gst: customer.customer_gst, place_of_supply: customer.place_of_supply } },
+    { $set: { phone_num: customer.consignee_mobile_number, totalPurAmnt: customer.total_amount } },
     { upsert: true }
   );
   return result.matchedCount
