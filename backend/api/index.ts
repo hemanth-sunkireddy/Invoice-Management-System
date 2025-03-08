@@ -8,6 +8,8 @@ var fileUploadRouter = require('../routes/file-upload');
 var productsRouter = require('../routes/products');
 var customersRouter = require('../routes/customers');
 
+// Mongo Connection
+const { connectToMongo } = require("../config.js");
 
 const corsOptions = {
   origin: ["https://swipe-invoice-management-frontend.vercel.app/", "http://localhost:3000"],

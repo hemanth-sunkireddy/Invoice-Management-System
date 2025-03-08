@@ -2,8 +2,16 @@
 import { useState } from "react";
 import { backendURL_FileUpload } from "../../../config";
 
+interface FileData {
+  fileName: string;
+  fileType: string;
+  fileSize: number;
+  [key: string]: string | number;
+}
+
+
 const FileUpload: React.FC = () => {
-  const [fileData, setFileData] = useState<Record<string, any> | null>(null);
+  const [fileData, setFileData] = useState<FileData | null>(null);
   const fileSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
