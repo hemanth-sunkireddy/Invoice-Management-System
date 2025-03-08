@@ -33,11 +33,11 @@ const Footer: React.FC = () => {
                 <div>
                     {/* <h4 className="text-lg font-semibold mb-4">Contact Us</h4> */}
 
-                    {footerDetails.email && <a href={`mailto:${footerDetails.email}`} className="block text-foreground-accent hover:text-foreground">Email: {footerDetails.email}</a>}
+                    {/* {footerDetails.email && <a href={`mailto:${footerDetails.email}`} className="block text-foreground-accent hover:text-foreground">Email: {footerDetails.email}</a>} */}
 
-                    {footerDetails.telephone && <a href={`tel:${footerDetails.telephone}`} className="block text-foreground-accent hover:text-foreground">Phone: {footerDetails.telephone}</a>}
+                    {/* {footerDetails.telephone && <a href={`tel:${footerDetails.telephone}`} className="block text-foreground-accent hover:text-foreground">Phone: {footerDetails.telephone}</a>} */}
 
-                    {footerDetails.socials && (
+                    {/* {footerDetails.socials && (
                         <div className="mt-5 flex items-center gap-5 flex-wrap">
                             {Object.keys(footerDetails.socials).map(platformName => {
                                 if (platformName && footerDetails.socials[platformName]) {
@@ -53,7 +53,7 @@ const Footer: React.FC = () => {
                                 }
                             })}
                         </div>
-                    )}
+                    )} */}
                 </div>
             </div>
             <div className="mt-8 md:text-center text-foreground-accent px-6">

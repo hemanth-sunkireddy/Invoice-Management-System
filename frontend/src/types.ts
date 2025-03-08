@@ -52,7 +52,7 @@ export interface ISocials {
     [key: string]: string | undefined;
 }
 
-export interface Invoice{
+export interface Invoice {
     serialNumber: number,
     customerName: string,
     productName: string,
@@ -60,4 +60,19 @@ export interface Invoice{
     tax: number,
     totalAmount: number,
     date: Date
+}
+
+export interface Customers {
+    customerName: string,
+    phoneNumber: number,
+    totPurchAmnt: number,
+}
+
+export interface Products {
+    productName: string,
+    quantity: number,
+    unitPrice: number,
+    tax: number,
+    priceWithTax: number,
+    discount: number,
 }

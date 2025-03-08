@@ -1,17 +1,13 @@
 const express = require("express");
 const cors = require("cors");
-
 const app = express();
 
-const invoices = [{
-  serialNumber: 1,
-    customerName: "John Doe",
-    productName: "Laptop",
-    quantity: 2,
-    tax: 150,
-    totalAmount: 2150,
-    date: new Date("2024-03-07"),
-}]
+// Routes Import
+var invoicesRouter = require('../routes/invoices');
+var fileUploadRouter = require('../routes/file-upload');
+var productsRouter = require('../routes/products');
+var customersRouter = require('../routes/customers');
+
 
 const corsOptions = {
   origin: ["https://swipe-invoice-management-frontend.vercel.app/", "http://localhost:3000"],
@@ -22,12 +18,10 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.get("/", (req, res) => res.send("Swipe Backend"));
-app.get('/invoices', (req, res) => {
-  res.json(invoices);
-});
-app.post('/file-upload', (req, res) => {
-  res.json({message: "FILE UPLoad successful"});
-});
+app.use('/invoices', invoicesRouter);
+app.post('/file-upload', fileUploadRouter);
+app.use('/products', productsRouter);
+app.use('/customers', customersRouter);
 
 app.listen(4000, () => console.log("Server ready on port 4000."));
 
