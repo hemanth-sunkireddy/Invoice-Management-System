@@ -1,22 +1,17 @@
-const products = [{
-    serialNumber: 1,
-      productName: "Laptop",
-      quantity: 2,
-      unitPrice: 2,
-      tax: 150,
-      priceWithTax: 2150,
-      discount: 10,
-  }]
+const express = require('express');
+const router = express.Router();
+const { client } = require('../config/mongodb');
 
-var express = require('express');
-var router = express.Router();
-
-router.get('/', function(req, res, next) {
-  res.send(products);
+router.get('/', async (req, res, next) => {
+  try {
+    const database = client.db('Swipe_Automatic_invoice_Management');
+    const productsCollection = database.collection('products');
+    const products = await productsCollection.find({}).toArray();
+    console.log(products);
+    res.json(products);
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = router;
-
-
-
-  

@@ -16,25 +16,25 @@ router.post('/', upload.single('file'), async (req, res) => {
     const mimeType = fileType === 'application/pdf' ? 'application/pdf' : fileType;
 
     const result = await extractInvoice(model, fileBuffer, mimeType);
-    let summary = JSON.stringify(result, null, 2);
-
-    const products = summary.items || [];
-    const customer = summary.customer_name ? {
-      customer_name: summary.customer_name,
-      customer_gst: summary.customer_gst,
-      place_of_supply: summary.place_of_supply
+    const invoice_num = result.invoice_number || "";
+    const invoice_date = result.invoice_date || "";
+    const customer_name = result.customer_name || "";
+    console.log("CUSTOMER NAME: ", result.customer_name);
+  
+    const products = result.items || [];
+    const customer = result.customer_name ? {
+      customer_name: result.customer_name,
+      customer_gst: result.customer_gst,
+      place_of_supply: result.place_of_supply
     } : {};
 
-    const fileData = {
-      fileName,
-      fileType,
-      fileSize,
-      summary,
-      fileBuffer: fileBuffer.toString('base64'),
-      uploadedAt: new Date(),
+    const invoiceData = {
+      invoice_num,
+      invoice_date,
+      customer_name,
     };
 
-    await insertInvoice(fileData);
+    await insertInvoice(invoiceData);
 
     const productUpdates = await Promise.all(products.map(updateProduct));
     const customerStatus = await updateCustomer(customer);
@@ -42,7 +42,7 @@ router.post('/', upload.single('file'), async (req, res) => {
     console.log(customerStatus)
     res.json({
       message: 'File upload and processing successful',
-      summary,
+      result,
       productUpdates,
       customerStatus
     });

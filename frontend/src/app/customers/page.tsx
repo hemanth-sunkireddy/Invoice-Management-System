@@ -31,9 +31,9 @@ const Customers: React.FC = () => {
         <tbody>
           {customers.length > 0 ? (
             customers.map((customer) => (
-              <tr key={customer.phoneNumber}>
-                <td className="border px-4 py-2">{customer.customerName}</td>
-                <td className="border px-4 py-2">{customer.phoneNumber}</td>
+              <tr key={customer.phone_number}>
+                <td className="border px-4 py-2">{customer.customer_name}</td>
+                <td className="border px-4 py-2">{customer.phone_number}</td>
                 <td className="border px-4 py-2">{customer.totPurchAmnt}</td>
               </tr>
             ))

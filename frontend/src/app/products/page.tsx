@@ -2,6 +2,7 @@
 import type { Products } from "@/types";
 import { backendURL_Products } from "../../../config";
 import { useEffect, useState } from "react";
+
 const Products: React.FC = () => {
   const [products, setProducts] = useState<Products[]>([]);
   const fetchProducts = async () =>{
@@ -25,22 +26,18 @@ const Products: React.FC = () => {
           <tr>
             <th>Product Name</th>
             <th>quantity</th>
-            <th> unitPrice</th>
-            <th> tax</th>
-            <th> priceWithTax</th>
-            <th> discount</th>
+            <th>Item Price</th>
+            <th> Taxable Value</th>
           </tr>
         </thead>
         <tbody>
           {products.length > 0 ? (
             products.map((product) => (
-              <tr key={product.productName}>
-                <td className="border px-4 py-2">{product.productName}</td>
+              <tr key={product.product_name}>
+                <td className="border px-4 py-2">{product.product_name}</td>
                 <td className="border px-4 py-2">{product.quantity}</td>
-                <td className="border px-4 py-2">{product.unitPrice}</td>
-                <td className="border px-4 py-2">{product.tax}</td>
-                <td className="border px-4 py-2">{product.priceWithTax}</td>
-                <td className="border px-4 py-2">{product.discount}</td>
+                <td className="border px-4 py-2">{product.item_price}</td>
+                <td className="border px-4 py-2">{product.taxable_value}</td>
               </tr>
             ))
           ) : (

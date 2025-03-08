@@ -53,26 +53,22 @@ export interface ISocials {
 }
 
 export interface Invoice {
-    serialNumber: number,
-    customerName: string,
-    productName: string,
-    quantity: number,
-    tax: number,
-    totalAmount: number,
-    date: Date
+    customer_name: string,
+    invoice_num: number,
+    invoice_date: string
 }
 
 export interface Customers {
-    customerName: string,
-    phoneNumber: number,
+    customer_name: string,
+    phone_number: number,
     totPurchAmnt: number,
 }
 
 export interface Products {
-    productName: string,
+    product_name: string,
     quantity: number,
-    unitPrice: number,
-    tax: number,
+    item_price: number,
+    taxable_value: number,
     priceWithTax: number,
     discount: number,
 }

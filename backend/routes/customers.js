@@ -1,19 +1,16 @@
-const customers = [{
-    serialNumber: 1,
-      customerName: "Hemanth",
-      phoneNumber: 984902299,
-      totPurchAmnt: 1000,
-  }]
+const express = require('express');
+const router = express.Router();
+const { client } = require('../config/mongodb');
 
-var express = require('express');
-var router = express.Router();
-
-router.get('/', function(req, res, next) {
-  res.send(customers);
+router.get('/', async (req, res, next) => {
+  try {
+    const database = client.db('Swipe_Automatic_invoice_Management');
+    const customersCollection = database.collection('customers');
+    const customers = await customersCollection.find({}).toArray();
+    res.json(customers);
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = router;
-
-
-
-  
