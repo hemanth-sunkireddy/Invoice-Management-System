@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node api/index.ts"
+    "start": "node api/index.js"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.0",
@@ -17,5 +17,9 @@
     "morgan": "~1.9.1",
     "multer": "^1.4.5-lts.1",
     "pug": "^3.0.3"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.10"
   }
 }

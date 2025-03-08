@@ -3,10 +3,10 @@ const cors = require("cors");
 const app = express();
 
 // Routes Import
-var invoicesRouter = require('../routes/invoices');
-var fileUploadRouter = require('../routes/file-upload');
-var productsRouter = require('../routes/products');
-var customersRouter = require('../routes/customers');
+var invoicesRouter = require('../routes/invoices.js');
+var fileUploadRouter = require('../routes/file-upload.js');
+var productsRouter = require('../routes/products.js');
+var customersRouter = require('../routes/customers.js');
 
 // Mongo Connection
 const { connectToMongo } = require("../config.js");
