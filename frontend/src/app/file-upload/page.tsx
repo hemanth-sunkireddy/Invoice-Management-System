@@ -3,18 +3,14 @@ import { useState } from "react";
 import { backendURL_FileUpload } from "../../../config";
 import { FaFilePdf, FaFileImage, FaFileExcel, FaFile } from "react-icons/fa";
 import { RiFileExcel2Fill } from "react-icons/ri";
+import { FileData } from "@/types";
 
-interface FileData {
-  fileName: string;
-  fileType: string;
-  fileSize: number;
-  [key: string]: string | number;
-}
 
 const FileUpload: React.FC = () => {
   const [fileData, setFileData] = useState<FileData | null>(null);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorText, setErrorText] = useState('');
 
   const handleFileUpload = async (file: File) => {
     const formData = new FormData();
@@ -38,10 +34,16 @@ const FileUpload: React.FC = () => {
       setFileData(result);
     } catch (error) {
       console.error('Error:', error);
+      if (error instanceof Error && error.message === 'Failed to fetch') {
+        setErrorText('Network error: Unable to connect to the server. Please check your internet connection or backend status.');
+      } else {
+        setErrorText('Internal Server Error');
+      }
     }
   };
 
   const fileSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    setErrorText('');
     event.preventDefault();
     if (selectedFiles.length > 0) {
       setIsLoading(true);
@@ -64,7 +66,7 @@ const FileUpload: React.FC = () => {
     if (fileType === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
       return "Excel (XLSX)";
     }
-    return fileType.split("/")[1]; // Default: use the second part of the MIME type, e.g., image, text
+    return fileType.split("/")[1];
   };
 
   return (
@@ -132,7 +134,11 @@ const FileUpload: React.FC = () => {
         {selectedFiles.length === 0 && (
           <p className="text-center py-4">No file selected - please select a file</p>
         )}
-
+        {errorText && (
+          <p className="text-center text-red-600 mt-4 font-medium">
+            {errorText}
+          </p>
+        )}
         <div className="flex justify-center items-center mt-8">
           <button
             type="submit"
@@ -141,10 +147,11 @@ const FileUpload: React.FC = () => {
             {isLoading ? 'Uploading, Please wait...' : 'Submit'}
           </button>
         </div>
+
       </form>
       {fileData && (
         <div className="mt-4 p-4 border rounded shadow-md w-full">
-        <h3 className="text-lg font-bold mb-2 text-center">Uploaded File Details</h3>
+          <h3 className="text-lg font-bold mb-2 text-center">Uploaded File Details</h3>
           <ul>
             {Object.entries(fileData).map(([key, value]) => (
               <li key={key}><strong>{key}:</strong> {value}</li>
