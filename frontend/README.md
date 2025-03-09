@@ -59,3 +59,5 @@ Before starting, make sure you have the following installed:
 5. **Add images**: Update `public/images` for Open Graph metadata (e.g., `og-image.jpg`, `twitter-image.jpg`).
 
 ---
+
+> Template: https://vercel.com/templates/next.js/finwise-saas-landing-page
