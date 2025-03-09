@@ -30,7 +30,7 @@ const extractInvoice = async (model, fileBuffer, mimeType, fileData = null) => {
     ]);
     let summary = result.response.text().trim();
     summary = cleanJsonString(summary);
-    console.log(summary);
+    // console.log(summary);
     try {
       parsedResult = JSON.parse(summary);
     } catch (jsonError) {

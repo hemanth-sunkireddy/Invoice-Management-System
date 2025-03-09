@@ -70,29 +70,47 @@ const ImageExtractionCommand =
 `;
 
 const xlsxJsonExtractionCommand = `
-  Extract and return a structured JSON object with the following fields and also don't give me any note I just need json:
+  Extract and return a structured JSON object with the following format:
+
   {
-    "consignee_name": null,
-    "consignee_mobile_number": null,
-    "consignee_address": null,
-    "customer_name": null,
-    "customer_mobile_number": null,
-    "customer_total_purchase_amount": null,
-    "invoice_number": null,
-    "invoice_date": null,
-    "CGST": null,
-    "SGST": null,
-    "IGST": null,
-    "items": [
+    "invoices": [
       {
-        "product_name": null,
-        "item_price": null,
-        "quantity": null,
-        "taxable_value": null,
-        "gst_percent": null
+        "invoice_number": null,
+        "invoice_date": null,
+        "customer_name": null,
+        "customer_mobile_number": null,
+        "CGST": null,
+        "SGST": null,
+        "IGST": null,
+        "total_amount": null,
+        "items": [
+          {
+            "product_name": null,
+            "quantity": null,
+            "unit_price": null,
+            "tax": null,
+            "discount": null
+          }
+        ]
       }
-    ],
-    "total_amount": null
-  }`;
+    ]
+  }
+
+  Steps for generating the JSON:
+  1. Extract unique invoice details (based on invoice number).
+  2. For each unique invoice, retrieve the corresponding invoice date from the first row.
+  3. For each invoice, gather customer information: customer name from party name, and customer_mobile_number from phone_number.
+  4. For each invoice, calculate the total amount by summing the Price with Taxfor each product.
+  5. CGST, SGST, and IGST are the same for the entire invoice file, so extract the values and add them to each invoice.
+  6. For each invoice, list all products with the following details:
+    - product_name: Extracted from the Product Name column.
+    - quantity: Extracted from the Qty column.
+    - unit_price: Extracted from the Price with Tax column.
+    - tax: Extracted from the Tax (%) column.
+    - discount: Discount or any relevant discount value (if applicable, else set as 0).
+
+  Return the structured JSON with each invoice containing the necessary details, including customer and product information, total amount, and tax breakdown.
+`;
+
 
 module.exports = { pdfExtractionCommand, xlsxJsonExtractionCommand, ImageExtractionCommand };
