@@ -1,12 +1,13 @@
-const { client } = require('../config/mongodb');
-
-const db = client.db('Swipe_Automatic_invoice_Management');
-const invoicesCollection = db.collection('invoices');
-const productsCollection = db.collection('products');
-const customersCollection = db.collection('customers');
+const { invoicesCollection, productsCollection, customersCollection } = require('../config/mongodb');
 
 const insertInvoice = async (fileData) => {
-  await invoicesCollection.insertOne(fileData);
+  try {
+    const result = await invoicesCollection.insertOne(fileData);
+    console.log('Invoice saved successfully with ID:', result.insertedId);
+  } catch (error) {
+    console.error('Error saving invoice:', error.message);
+    throw new Error('Failed to insert invoice');
+  }
 };
 
 const updateProduct = async (product) => {

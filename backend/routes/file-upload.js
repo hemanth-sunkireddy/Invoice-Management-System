@@ -28,7 +28,7 @@ router.post('/', upload.single('file'), async (req, res) => {
     }
 
     const result = await extractInvoice(model, base64Data, mimeType, base64Data);
-
+    console.log(result);
     const {
       invoice_number = '',
       invoice_date = '',
@@ -41,18 +41,21 @@ router.post('/', upload.single('file'), async (req, res) => {
 
     const customer = consignee_name
       ? {
-          customer_name: consignee_name,
-          customer_mobile_number: consignee_mobile_number,
-          total_amount,
-        }
+        customer_name: consignee_name,
+        customer_mobile_number: consignee_mobile_number,
+        total_amount,
+      }
       : {};
 
-    const invoiceData = {
-      invoice_num: invoice_number,
-      invoice_date,
-      invoice_tax,
-      total_amount,
-    };
+      const invoiceData = {
+        invoice_number,
+        invoice_date,
+        invoice_tax,
+        total_amount,
+        // CGST: Object.fromEntries(result.CGST || []),
+        // SGST: Object.fromEntries(result.SGST || []),
+        // IGST: Object.fromEntries(result.IGST || []),
+      };
     const invoiceUpdateStatus = await insertInvoice(invoiceData);
     const productUpdates = await Promise.all(items.map(updateProduct));
     const customerStatus = await updateCustomer(customer);

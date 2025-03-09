@@ -4,8 +4,8 @@ const cleanJsonString = (jsonString) => {
   return jsonString
     .replace(/^```json\s*/, '')
     .replace(/\n?```$/, '')
-    .replace(/\,\s*\]/g, ']') // Remove trailing commas in arrays
-    .replace(/\,\s*\}/g, '}')  // Remove trailing commas in objects
+    .replace(/\,\s*\]/g, ']')
+    .replace(/\,\s*\}/g, '}')
     .trim();
 };
 
@@ -26,14 +26,10 @@ const extractInvoice = async (model, fileBuffer, mimeType, fileData = null) => {
       },
       extractionCommand,
     ]);
-
     let summary = result.response.text().trim();
     summary = cleanJsonString(summary);
-    console.log(summary);
     try {
       parsedResult = JSON.parse(summary);
-      console.log(parsedResult);
-      // Ensure all fields are present even if they have null or empty values
       parsedResult.items = parsedResult.items?.map(item => ({
         product_name: item.product_name || null,
         item_price: item.item_price || null,
@@ -48,14 +44,20 @@ const extractInvoice = async (model, fileBuffer, mimeType, fileData = null) => {
       throw new Error(`Failed to parse JSON at position ${jsonError.message.match(/position (\d+)/)?.[1] || 'unknown'}`);
     }
 
-    // Calculate total tax
     let invoice_tax = 0;
+
     ['CGST', 'SGST', 'IGST'].forEach((tax) => {
-      if (parsedResult[tax]) invoice_tax += parsedResult[tax];
+      if (parsedResult[tax] && typeof parsedResult[tax] === 'object') {
+        Object.values(parsedResult[tax]).forEach((value) => {
+          if (typeof value === 'number') {
+            invoice_tax += value;
+          }
+        });
+      }
     });
+
     parsedResult.invoice_tax = invoice_tax;
 
-    // Fallbacks for consignee info
     parsedResult.consignee_name = parsedResult.consignee_name || parsedResult.customer_name || null;
     parsedResult.consignee_mobile_number = parsedResult.consignee_mobile_number || parsedResult.customer_mobile_number || null;
 
