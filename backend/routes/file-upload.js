@@ -6,6 +6,7 @@ require('dotenv').config();
 const { model } = require('../config/genAI');
 const { extractInvoice } = require('../helpers/invoiceExtractor');
 const { insertInvoice, updateProduct, updateCustomer } = require('../services/dbUpdate');
+const { convertXlsxToCsv } = require('../helpers/xlsxConverter');
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -13,41 +14,55 @@ router.post('/', upload.single('file'), async (req, res) => {
   try {
     const { fileName, fileType, fileSize } = req.body;
     const fileBuffer = req.file.buffer;
-    const mimeType = fileType === 'application/pdf' ? 'application/pdf' : fileType;
 
-    const result = await extractInvoice(model, fileBuffer, mimeType);
-    const invoice_num = result.invoice_number || "";
-    const invoice_date = result.invoice_date || "";
-    const invoice_tax = result.invoice_tax || "";
-    const total_amount = result.total_amount || "";
-    console.log("INVOICE NUM: ", invoice_num);
-    console.log("INVOICE TAX: ", invoice_tax);
-    console.log("TOTAL AMOUNT: ", total_amount);
-    console.log("INVOICE DATE: ", invoice_date);
-  
-    const products = result.items || [];
-    const customer = result.consignee_name ? {
-      customer_name: result.consignee_name,
-      customer_mobile_number: result.consignee_mobile_number,
-      total_amount: total_amount
-    } : {};
-    console.log(customer)
+    let mimeType = fileType;
+    let base64Data = '';
+
+    if (fileType === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+      const { base64Data: convertedBase64Data } = convertXlsxToCsv(fileBuffer);
+      base64Data = convertedBase64Data;
+      mimeType = 'text/csv';
+    } else if (fileType === 'application/pdf') {
+      base64Data = fileBuffer.toString('base64');
+      mimeType = 'application/pdf';
+    }
+
+    const result = await extractInvoice(model, base64Data, mimeType, base64Data);
+
+    const {
+      invoice_number = '',
+      invoice_date = '',
+      invoice_tax = '',
+      total_amount = '',
+      consignee_name,
+      consignee_mobile_number,
+      items = [],
+    } = result;
+
+    const customer = consignee_name
+      ? {
+          customer_name: consignee_name,
+          customer_mobile_number: consignee_mobile_number,
+          total_amount,
+        }
+      : {};
+
     const invoiceData = {
-      invoice_num,
+      invoice_num: invoice_number,
       invoice_date,
       invoice_tax,
       total_amount,
     };
-
     const invoiceUpdateStatus = await insertInvoice(invoiceData);
-    console.log("INVOICE DB UPDATE STATUS: ", invoiceUpdateStatus);
-
-    const productUpdates = await Promise.all(products.map(updateProduct));
+    const productUpdates = await Promise.all(items.map(updateProduct));
     const customerStatus = await updateCustomer(customer);
-    console.log(productUpdates)
-    console.log(customerStatus)
+    console.log(invoiceUpdateStatus);
+    console.log(customerStatus);
     res.json({
       message: 'File upload and processing successful',
+      invoiceData,
+      customerStatus,
+      modelResponse: result,
     });
   } catch (error) {
     console.error('Error processing request:', error);
