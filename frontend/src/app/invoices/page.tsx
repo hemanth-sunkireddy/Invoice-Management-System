@@ -8,7 +8,7 @@ import Link from "next/link";
 const Invoice: React.FC = () => {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [errorText, setErrorText] = useState('');
-
+  console.log(errorText);
   const fetchInvoices = async () =>{
     try {
       const server_response = await fetch(backendURL_Invoices);

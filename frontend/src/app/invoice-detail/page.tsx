@@ -15,6 +15,7 @@ const InvoiceDetail: React.FC = () => {
   useEffect(
     () =>{
      fetchInvoices()
+     console.log(invoices)
     }, []
   )
   return (

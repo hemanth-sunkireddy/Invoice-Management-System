@@ -3,11 +3,11 @@ import { useState } from "react";
 import { backendURL_FileUpload } from "../../../config";
 import { FaFilePdf, FaFileImage, FaFileExcel, FaFile } from "react-icons/fa";
 import { RiFileExcel2Fill } from "react-icons/ri";
-import { FileData } from "@/types";
+// import { FileData } from "@/types";
 
 
 const FileUpload: React.FC = () => {
-  const [fileData, setFileData] = useState<FileData | null>(null);
+  const [message, setMessage] = useState('');
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorText, setErrorText] = useState('');
@@ -31,7 +31,7 @@ const FileUpload: React.FC = () => {
 
       const result = await response.json();
       console.log('Success:', result);
-      setFileData(result);
+      setMessage(result.message);
     } catch (error) {
       console.error('Error:', error);
       if (error instanceof Error && error.message === 'Failed to fetch') {
@@ -149,7 +149,7 @@ const FileUpload: React.FC = () => {
         </div>
 
       </form>
-      {fileData && (
+      {/* {fileData && (
         <div className="mt-4 p-4 border rounded shadow-md w-full">
           <h3 className="text-lg font-bold mb-2 text-center">Uploaded File Details</h3>
           <ul>
@@ -158,7 +158,8 @@ const FileUpload: React.FC = () => {
             ))}
           </ul>
         </div>
-      )}
+      )} */}
+      <p>{message}</p>
     </section>
   );
 };

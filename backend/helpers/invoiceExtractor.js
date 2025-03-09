@@ -1,4 +1,4 @@
-const { pdfImageExtractionCommand, xlsxJsonExtractionCommand } = require('./extractionCommand');
+const { pdfExtractionCommand, xlsxJsonExtractionCommand, ImageExtractionCommand } = require('./extractionCommand');
 
 const cleanJsonString = (jsonString) => {
   return jsonString
@@ -12,10 +12,12 @@ const cleanJsonString = (jsonString) => {
 const extractInvoice = async (model, fileBuffer, mimeType, fileData = null) => {
   try {
     let parsedResult = {};
-    let extractionCommand =
-      mimeType === 'application/pdf' || mimeType.startsWith('image/')
-        ? pdfImageExtractionCommand
-        : xlsxJsonExtractionCommand;
+    let extractionCommand;
+    if (mimeType === 'application/pdf' || mimeType.startsWith('image/')) {
+      extractionCommand = mimeType === 'image/jpeg' ? ImageExtractionCommand : pdfExtractionCommand;
+    } else {
+      extractionCommand = xlsxJsonExtractionCommand;
+    }
 
     const result = await model.generateContent([
       {
@@ -28,16 +30,9 @@ const extractInvoice = async (model, fileBuffer, mimeType, fileData = null) => {
     ]);
     let summary = result.response.text().trim();
     summary = cleanJsonString(summary);
+    console.log(summary);
     try {
       parsedResult = JSON.parse(summary);
-      parsedResult.items = parsedResult.items?.map(item => ({
-        product_name: item.product_name || null,
-        item_price: item.item_price || null,
-        quantity: item.quantity || null,
-        taxable_value: item.taxable_value || null,
-        gst_percent: item.gst_percent ?? null,
-      })) || [];
-
     } catch (jsonError) {
       console.error('JSON parsing error:', jsonError.message);
       console.error('Failed JSON snippet:', summary.slice(0, 500));
@@ -55,12 +50,21 @@ const extractInvoice = async (model, fileBuffer, mimeType, fileData = null) => {
         });
       }
     });
+    
+    if (mimeType.startsWith('image/jpeg')) {
+      if (parsedResult.items && Array.isArray(parsedResult.items)) {
+        parsedResult.items.forEach((item) => {
+          item.price_with_tax = item.unit_price * item.quantity;
+        });
+      }
+    }
 
     parsedResult.invoice_tax = invoice_tax;
 
     parsedResult.consignee_name = parsedResult.consignee_name || parsedResult.customer_name || null;
     parsedResult.consignee_mobile_number = parsedResult.consignee_mobile_number || parsedResult.customer_mobile_number || null;
 
+    
     return parsedResult;
   } catch (error) {
     console.error('Error extracting data:', error.message);

@@ -13,7 +13,13 @@ const insertInvoice = async (fileData) => {
 const updateProduct = async (product) => {
   const result = await productsCollection.updateOne(
     { product_name: product.product_name },
-    { $set: { item_price: product.item_price, gst: product.gst, taxable_value: product.taxable_value } },
+    { 
+      $set: { 
+        item_price: product.unit_price, 
+        gst: product.tax, 
+        taxable_value: product.price_with_tax 
+      } 
+    },
     { upsert: true }
   );
   return result.matchedCount
