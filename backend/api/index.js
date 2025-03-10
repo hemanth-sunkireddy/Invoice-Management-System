@@ -23,7 +23,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 // Apply MongoDB connection check to all routes
-// app.use(checkMongoConnection);
+app.use(checkMongoConnection);
 
 
 // Routes
