@@ -3,6 +3,7 @@ export interface Invoice {
     invoice_date: string,
     invoice_tax: string,
     total_amount: number,
+    updateStatus: string,
 }
 
 export interface Customers {

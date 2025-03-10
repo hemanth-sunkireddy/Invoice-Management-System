@@ -1,14 +1,4 @@
-const { invoicesCollection, productsCollection, customersCollection } = require('../config/mongodb');
-
-const insertInvoice = async (fileData) => {
-  try {
-    const result = await invoicesCollection.insertOne(fileData);
-    // console.log('Invoice saved successfully with ID:', result.insertedId);
-  } catch (error) {
-    console.error('Error saving invoice:', error.message);
-    throw new Error('Failed to insert invoice');
-  }
-};
+const { productsCollection, customersCollection } = require('../config/mongodb');
 
 const updateProduct = async (product) => {
   const result = await productsCollection.updateOne(
@@ -39,7 +29,6 @@ const updateCustomer = async (customer) => {
 };
 
 module.exports = {
-  insertInvoice,
   updateProduct,
   updateCustomer
 };

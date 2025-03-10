@@ -1,16 +1,10 @@
 const { pdfExtractionCommand, xlsxJsonExtractionCommand, ImageExtractionCommand } = require('./extractionCommand');
 
 const cleanJsonString = (jsonString) => {
-
   jsonString = jsonString.replace(/^```json\s*/, '').replace(/\n?```$/, '');
-
-
   jsonString = jsonString.replace(/,\s*(?=\]|\})/g, '');
-
   jsonString = jsonString.replace(/(\\n)/g, ' ').trim();
-
   jsonString = jsonString.replace(/"([^"]*)$/, '"$1');
-
   jsonString = jsonString.replace(/,\s*(?=\]|\})/g, '');
 
   return jsonString;
@@ -27,6 +21,7 @@ const extractInvoice = async (model, fileBuffer, mimeType, fileData = null) => {
       extractionCommand = xlsxJsonExtractionCommand;
     }
 
+
     const result = await model.generateContent([
       {
         inlineData: {
@@ -38,7 +33,9 @@ const extractInvoice = async (model, fileBuffer, mimeType, fileData = null) => {
     ]);
     let summary = result.response.text().trim();
 
+    console.log(summary);
     summary = cleanJsonString(summary);
+
     try {
       parsedResult = JSON.parse(summary);
     } catch (jsonError) {
@@ -48,19 +45,49 @@ const extractInvoice = async (model, fileBuffer, mimeType, fileData = null) => {
     }
 
     let invoice_tax = 0;
+    if (mimeType === 'application/pdf' || mimeType.startsWith('image/')){
+      ['CGST', 'SGST', 'IGST'].forEach((tax) => {
+        // console.log(typeof parsedResult[tax]);
+        if (parsedResult[tax] && typeof parsedResult[tax] === 'object') {
+          Object.values(parsedResult[tax]).forEach((value) => {
+            // console.log(typeof value);
+            // console.log(value);
+            const cleanedValue = typeof value === 'string' ? value.replace(/₹|,/g, '').trim() : value;
+            const numValue = parseFloat(cleanedValue);
+            // console.log(numValue);
+            if (!isNaN(numValue)) {
+              invoice_tax += numValue;
+            }
+          });
+        }
+      });
 
-    ['CGST', 'SGST', 'IGST'].forEach((tax) => {
-      console.log(typeof parsedResult[tax])
-      if (parsedResult[tax] && typeof parsedResult[tax] === 'object') {
-        Object.values(parsedResult[tax]).forEach((value) => {
-          console.log(typeof value);
-          const numValue = parseFloat(value);
-          if (!isNaN(numValue)) {
-            invoice_tax += numValue;
-          }
+    parsedResult.invoice_tax = invoice_tax;
+    }
+    else{
+      const joinValues = (value) => typeof value === 'string' ? parseFloat(value.replace(/₹|,|\./g, '').trim()) || 0 : 0;
+
+      let invoice_tax = 0;
+      
+      if (Array.isArray(parsedResult.invoices)) {
+        parsedResult.invoices.forEach((invoice) => {
+          const cgstTotal = joinValues(invoice.CGST);
+          const sgstTotal = joinValues(invoice.SGST);
+          const igstTotal = joinValues(invoice.IGST);
+      
+          console.log("CGST TOTAL: ", cgstTotal);
+          console.log("SGST Total: ", sgstTotal);
+          console.log("IGST total: ", igstTotal);
+      
+          invoice.CGST = { "total per": cgstTotal };
+          invoice.SGST = { "total per": sgstTotal };
+          invoice.IGST = { "total per": igstTotal };
+          invoice_tax += cgstTotal + sgstTotal + igstTotal;
+          invoice.invoice_tax = invoice_tax
         });
       }
-    });
+
+    }
 
     if (mimeType.startsWith('image/jpeg')) {
       if (parsedResult.items && Array.isArray(parsedResult.items)) {
@@ -70,7 +97,6 @@ const extractInvoice = async (model, fileBuffer, mimeType, fileData = null) => {
       }
     }
 
-    parsedResult.invoice_tax = invoice_tax;
 
     parsedResult.consignee_name = parsedResult.consignee_name || parsedResult.customer_name || null;
     parsedResult.consignee_mobile_number = parsedResult.consignee_mobile_number || parsedResult.customer_mobile_number || null;

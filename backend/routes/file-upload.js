@@ -5,14 +5,15 @@ require('dotenv').config();
 
 const { model } = require('../config/genAI');
 const { extractInvoice } = require('../helpers/invoiceExtractor');
-const { insertInvoice, updateProduct, updateCustomer } = require('../services/dbUpdate');
+const { updateProduct, updateCustomer } = require('../services/dbUpdate');
+const { insertOrUpdateInvoice } = require('../services/invoiceDB-update');
 const { convertXlsxToCsv } = require('../helpers/xlsxConverter');
 
 const upload = multer({ storage: multer.memoryStorage() });
 
 router.post('/', upload.single('file'), async (req, res) => {
   try {
-    const { fileName, fileType, fileSize } = req.body;
+    const { fileType } = req.body;
     const fileBuffer = req.file.buffer;
     console.log(fileType);
     let mimeType = fileType;
@@ -55,16 +56,16 @@ router.post('/', upload.single('file'), async (req, res) => {
         IGST: Object.entries(IGST),
       };
 
-      invoiceData.push(invoiceEntry);
-
       const customerDataEntry = {
         customer_name: consignee_name,
         customer_phone: consignee_mobile_number,
         total_amount,
       };
 
-      // Insert the invoice, customer and product data
-      const invoiceUpdateStatus = await insertInvoice(invoiceEntry);
+
+      const mongodb_response = await insertOrUpdateInvoice(invoiceEntry);
+      invoiceEntry.updateStatus = mongodb_response;
+      invoiceData.push(invoiceEntry);
       const customerStatus = await updateCustomer(customerDataEntry);
       const productUpdates = await Promise.all(
         items.map(item =>
@@ -78,17 +79,11 @@ router.post('/', upload.single('file'), async (req, res) => {
         )
       );
 
-      // console.log("Invoice Update Status: ", invoiceUpdateStatus);
-      // console.log("Customer Status: ", customerStatus);
-      // console.log("Product Update Status: ", productUpdates);
-
-      // Set the response data
       productData.push(...items);
       customerData.push(customerDataEntry);
     } else {
       const invoices = result.invoices || [];
 
-      // Iterate through each invoice and process it
       for (let invoice of invoices) {
         const {
           invoice_number,
@@ -103,8 +98,8 @@ router.post('/', upload.single('file'), async (req, res) => {
           customer_mobile_number,
         } = invoice;
 
-        // Prepare data for insertion and update
-        const invoiceData = {
+
+        const invoiceEntry = {
           invoice_number,
           invoice_date,
           invoice_tax,
@@ -113,17 +108,16 @@ router.post('/', upload.single('file'), async (req, res) => {
           SGST: SGST ? Object.entries(SGST) : [],
           IGST: IGST ? Object.entries(IGST) : [],
         };
-
         const customerDataEntry = {
           customer_name,
           customer_mobile_number,
           total_amount,
         };
 
-        // Insert the invoice and update customer data
-        await insertInvoice(invoiceData); 
-        // console.log(invoiceData);
-        // console.log(customerDataEntry);
+        const mongodb_response = await insertOrUpdateInvoice(invoiceEntry); 
+        invoiceEntry.updateStatus = mongodb_response;
+        console.log(mongodb_response);
+        invoiceData.push(invoiceEntry);
        
         await updateCustomer(customerDataEntry);
 
@@ -148,16 +142,12 @@ router.post('/', upload.single('file'), async (req, res) => {
         customerData.push(customerDataEntry);
       }
     }
-    // console.log("Product Data: ", productData);
-    // console.log("Customer Data: ", customerData);
-    // console.log("Invoice Data: ", invoiceData);
 
-    // Send the final response with processed data
     res.json({
       message: 'File upload and processing successful',
       productData,
       customerData,
-      invoiceData
+      invoiceData,
     });
   } catch (error) {
     console.error('Error processing request:', error);
