@@ -7,6 +7,7 @@ const { model } = require('../config/genAI');
 const { extractInvoice } = require('../helpers/invoiceExtractor');
 const { updateProduct, updateCustomer } = require('../services/dbUpdate');
 const { insertOrUpdateInvoice } = require('../services/invoiceDB-update');
+const { insertOrUpdateCustomer } = require('../services/customer-update');
 const { convertXlsxToCsv } = require('../helpers/xlsxConverter');
 
 const upload = multer({ storage: multer.memoryStorage() });
@@ -59,6 +60,8 @@ router.post('/', upload.single('file'), async (req, res) => {
       const customerDataEntry = {
         customer_name: consignee_name,
         customer_phone: consignee_mobile_number,
+        invoice_number,
+        invoice_date,
         total_amount,
       };
 
@@ -66,7 +69,7 @@ router.post('/', upload.single('file'), async (req, res) => {
       const mongodb_response = await insertOrUpdateInvoice(invoiceEntry);
       invoiceEntry.updateStatus = mongodb_response;
       invoiceData.push(invoiceEntry);
-      const customerStatus = await updateCustomer(customerDataEntry);
+      const customerStatus = await insertOrUpdateCustomer(customerDataEntry);
       const productUpdates = await Promise.all(
         items.map(item =>
           updateProduct({

@@ -63,6 +63,9 @@ const extractInvoice = async (model, fileBuffer, mimeType, fileData = null) => {
       });
 
     parsedResult.invoice_tax = invoice_tax;
+    parsedResult.consignee_name = parsedResult.consignee_name || parsedResult.customer_name || null;
+    parsedResult.consignee_mobile_number = parsedResult.consignee_mobile_number || parsedResult.customer_mobile_number || null;
+
     }
     else{
       const joinValues = (value) => typeof value === 'string' ? parseFloat(value.replace(/₹|,|\./g, '').trim()) || 0 : 0;
@@ -96,10 +99,6 @@ const extractInvoice = async (model, fileBuffer, mimeType, fileData = null) => {
         });
       }
     }
-
-
-    parsedResult.consignee_name = parsedResult.consignee_name || parsedResult.customer_name || null;
-    parsedResult.consignee_mobile_number = parsedResult.consignee_mobile_number || parsedResult.customer_mobile_number || null;
 
 
     return parsedResult;

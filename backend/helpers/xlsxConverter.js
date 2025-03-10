@@ -40,14 +40,10 @@ const convertXlsxToCsv = (fileBuffer) => {
     throw new Error('The uploaded XLSX file contains only empty rows.');
   }
 
-  // Convert filtered and formatted data back to CSV
   const filteredSheet = xlsx.utils.json_to_sheet(nonEmptyRows);
   const csvData = xlsx.utils.sheet_to_csv(filteredSheet);
 
-  // Encode the CSV data as base64
   const base64Data = Buffer.from(csvData, 'utf-8').toString('base64');
-  // console.log(base64Data);
-  // console.log(csvData);
   return { csvData, base64Data };
 };
 

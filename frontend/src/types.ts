@@ -9,7 +9,10 @@ export interface Invoice {
 export interface Customers {
     customer_name: string,
     phone_number: number,
-    totalPurAmnt: number,
+    customer_phone: string,
+    total_amount: string,
+    invoice_number: string,
+    invoice_date: string,
 }
 
 export interface Products {

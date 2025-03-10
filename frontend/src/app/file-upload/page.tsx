@@ -207,8 +207,11 @@ const FileUpload: React.FC = () => {
                 {uploadedCustomerData.map((customer, index) => (
                   <tr key={index} className="hover:bg-gray-50">
                     <td className="border px-6 py-3 text-center">{customer.customer_name}</td>
-                    <td className="border px-6 py-3 text-center">{customer.phone_number}</td>
-                    <td className="border px-6 py-3 text-center">{customer.totalPurAmnt}</td>
+                    <td className="border px-6 py-3 text-center">
+                      {customer.customer_phone ? customer.customer_phone : "No phone number found"}
+                    </td>
+
+                    <td className="border px-6 py-3 text-center">{customer.total_amount}</td>
                   </tr>
                 ))}
               </tbody>

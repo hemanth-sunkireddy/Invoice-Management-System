@@ -109,7 +109,7 @@ const xlsxJsonExtractionCommand = `
     - tax: Extracted from the Tax (%) column.
     - discount: Discount or any relevant discount value (if applicable, else set as 0).
 
-  Return the structured JSON with each invoice containing the necessary details, including customer and product information, total amount, and tax breakdown.
+  Return the structured JSON with each invoice containing the necessary details, including customer and product information, total amount, CGST, SGST and IGST.
   Return a valid structured data only.
 `;
 

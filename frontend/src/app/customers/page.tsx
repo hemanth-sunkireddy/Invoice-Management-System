@@ -77,10 +77,13 @@ const Customers: React.FC = () => {
             </thead>
             <tbody>
               {customers.map((customer) => (
-                <tr key={customer.phone_number} className="hover:bg-gray-50">
+                <tr key={customer.customer_phone} className="hover:bg-gray-50">
                   <td className="border px-4 py-2 text-gray-800">{customer.customer_name}</td>
-                  <td className="border px-4 py-2 text-gray-800">{customer.phone_number}</td>
-                  <td className="border px-4 py-2 text-gray-800">{customer.totalPurAmnt}</td>
+                  <td className="border px-6 py-3 text-center">
+                    {customer.customer_phone ? customer.customer_phone : "No phone number found"}
+                  </td>
+
+                  <td className="border px-4 py-2 text-gray-800">{customer.total_amount}</td>
                 </tr>
               ))}
             </tbody>
