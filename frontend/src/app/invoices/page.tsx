@@ -17,8 +17,12 @@ const Invoice: React.FC = () => {
       }
       const data: Invoice[] = await server_response.json();
       setInvoices(data);
-    } catch (error: any) {
-      setErrorText(error.message || 'Something went wrong');
+    } catch (error) {
+      if (error instanceof Error) {
+        setErrorText(error.message);
+      } else {
+        setErrorText('Internal Server Error');
+      }
     }
   }
 
