@@ -27,9 +27,13 @@ const Invoice: React.FC = () => {
       }
     } catch (error) {
       if (error instanceof TypeError) {
-        setError('Network error: Please check your internet connection.');
-        setServerMessage('Network error: Please check your internet connection.');
-        setNetworkError(true);
+        if (error.message === 'Failed to fetch') {
+          setError('Error in connecting with backend. Please try again later.');
+          setServerMessage('Error in connecting with backend. Please try again later.');
+        } else {
+          setError(`TypeError: ${error.message}`);
+          setServerMessage(`TypeError: ${error.message}`);
+        }
       } else if (error instanceof Error) {
         setError(error.message);
         setServerMessage(error.message);
@@ -40,8 +44,9 @@ const Invoice: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }
+  };
   
+
   useEffect(() => {
     fetchInvoices();
   }, []);
@@ -53,12 +58,12 @@ const Invoice: React.FC = () => {
         {loading ? (
           <p className="text-blue-500">Loading...</p>
         ) : networkError ? (
-          <p className="text-red-500">Network error: Please check your internet connection.</p>
+          <p className="text-red-500">{error}</p>
         ) : (
           <p className={error ? "text-red-500" : "text-black"}>{serverMessage}</p>
         )}
       </div>
-      
+
       {!loading && !networkError && invoices.length > 0 && (
         <div className="w-full max-w-4xl">
           <table className="table-auto w-full border-collapse border border-gray-300 shadow-lg rounded-lg">

@@ -1,4 +1,6 @@
-# Swipe-Invoice-Management
+# Swipe Invoice Management
+
+![Home Page](frontend/public/images/home-page.png)
 
 ## Frontend
 - **Framework:** Next.js  
