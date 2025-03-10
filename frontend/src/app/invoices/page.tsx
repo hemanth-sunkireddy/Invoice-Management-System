@@ -30,9 +30,11 @@ const Invoice: React.FC = () => {
         if (error.message === 'Failed to fetch') {
           setError('Error in connecting with backend. Please try again later.');
           setServerMessage('Error in connecting with backend. Please try again later.');
+          setNetworkError(true);
         } else {
           setError(`TypeError: ${error.message}`);
           setServerMessage(`TypeError: ${error.message}`);
+          setNetworkError(true);
         }
       } else if (error instanceof Error) {
         setError(error.message);

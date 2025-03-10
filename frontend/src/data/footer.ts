@@ -7,12 +7,12 @@ export const footerDetails: {
     subheading: "Create your Invoices, Purchases & Quotations in less than 10 seconds. Share on WhatsApp with payment links and get paid faster!",
     quickLinks: [
         {
-            text: "Code Documentation",
-            url: "https://github.com/hemanth-sunkireddy/Swipe-Invoice-Management/wiki"
-        },
-        {
             text: "Github Code Link",
             url: "https://github.com/hemanth-sunkireddy/Swipe-Invoice-Management"
+        },
+        {
+            text: "Project Documentation",
+            url: "https://github.com/hemanth-sunkireddy/Swipe-Invoice-Management/wiki"
         },
         {
             text: "Backend Server URL",
