@@ -18,9 +18,9 @@ export interface Customers {
 export interface Products {
     product_name: string,
     quantity: number,
-    item_price: number,
-    taxable_value: number,
-    priceWithTax: number,
+    unit_price: number,
+    tax: string,
+    price_with_tax: string,
     discount: number,
 }
 export interface FileData {

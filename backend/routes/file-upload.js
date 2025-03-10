@@ -5,7 +5,7 @@ require('dotenv').config();
 
 const { model } = require('../config/genAI');
 const { extractInvoice } = require('../helpers/invoiceExtractor');
-const { updateProduct, updateCustomer } = require('../services/dbUpdate');
+const { updateProduct } = require('../services/product-update');
 const { insertOrUpdateInvoice } = require('../services/invoiceDB-update');
 const { insertOrUpdateCustomer } = require('../services/customer-update');
 const { convertXlsxToCsv } = require('../helpers/xlsxConverter');

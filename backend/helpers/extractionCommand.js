@@ -21,9 +21,8 @@ const pdfExtractionCommand =
     - quantity: Quantity of the item purchased or qty
     - price_with_tax: Total Amount after applying tax
     - tax: GST or tax percentage applied to the item
-  
+  - Dont include Shipping Charges, debit card charges and Making charges in the items
   Ensure all fields are present, even if they have null or empty values. Use consignee details first, then fallback to customer details if missing.
-
   For CGST, SGST, and IGST:
   - Extract the total CGST, SGST, and IGST values from the invoice summary, grouped by GST percentage.
   - Create separate objects for CGST, SGST, and IGST, each containing tax percentages as keys and the corresponding tax amounts as values.
