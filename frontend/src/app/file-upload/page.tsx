@@ -3,12 +3,16 @@ import { useState } from "react";
 import { backendURL_FileUpload } from "../../../config";
 import { FaFilePdf, FaFileImage, FaFileExcel, FaFile } from "react-icons/fa";
 import { RiFileExcel2Fill } from "react-icons/ri";
-// import { FileData } from "@/types";
-
+import type { Invoice } from "@/types";
+import type { Customers } from "@/types";
+import type { Products } from "@/types";
 
 const FileUpload: React.FC = () => {
   const [message, setMessage] = useState('');
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [uploadedInvoiceData, setUploadedInvoiceData] = useState<Invoice[]>([]);
+  const [uploadedCustomerData, setUploadedCustomerData] = useState<Customers[]>([]);
+  const [uploadedProductData, setUploadedProductData] = useState<Products[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorText, setErrorText] = useState('');
 
@@ -32,6 +36,10 @@ const FileUpload: React.FC = () => {
       const result = await response.json();
       console.log('Success:', result);
       setMessage(result.message);
+      setUploadedInvoiceData(result.invoiceData || []);
+      setUploadedCustomerData(result.customerData || []);
+      setUploadedProductData(result.productData || []);
+
     } catch (error) {
       console.error('Error:', error);
       if (error instanceof Error && error.message === 'Failed to fetch') {
@@ -44,6 +52,10 @@ const FileUpload: React.FC = () => {
 
   const fileSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     setErrorText('');
+    setMessage('');
+    setUploadedCustomerData([]);
+    setUploadedInvoiceData([]);
+    setUploadedProductData([]);
     event.preventDefault();
     if (selectedFiles.length > 0) {
       setIsLoading(true);
@@ -108,22 +120,22 @@ const FileUpload: React.FC = () => {
 
         {/* Selected Files */}
         {selectedFiles.length > 0 && (
-          <div className="mt-8 border rounded shadow-md w-full">
-            <h3 className="text-lg font-bold text-center mb-4">Selected Files</h3>
-            <table className="table-auto w-full">
+          <div className="mt-8 border rounded shadow-md w-full p-8">
+            <h3 className="text-xl font-bold text-center mb-6">Selected Files</h3>
+            <table className="table-auto w-full border-collapse">
               <thead>
-                <tr>
-                  <th className="border px-4 py-2">File Name</th>
-                  <th className="border px-4 py-2">File Type</th>
-                  <th className="border px-4 py-2">File Size (bytes)</th>
+                <tr className="bg-gray-100">
+                  <th className="border px-6 py-3 text-left">File Name</th>
+                  <th className="border px-6 py-3 text-left">File Type</th>
+                  <th className="border px-6 py-3 text-left">File Size (bytes)</th>
                 </tr>
               </thead>
               <tbody>
                 {selectedFiles.map((file) => (
-                  <tr key={file.name}>
-                    <td className="border px-4 py-2 text-center">{file.name}</td>
-                    <td className="border px-4 py-2 text-center">{getSimplifiedFileType(file.type)}</td>
-                    <td className="border px-4 py-2 text-center">{file.size}</td>
+                  <tr key={file.name} className="hover:bg-gray-50">
+                    <td className="border px-6 py-3 text-center">{file.name}</td>
+                    <td className="border px-6 py-3 text-center">{getSimplifiedFileType(file.type)}</td>
+                    <td className="border px-6 py-3 text-center">{file.size}</td>
                   </tr>
                 ))}
               </tbody>
@@ -149,17 +161,86 @@ const FileUpload: React.FC = () => {
         </div>
 
       </form>
-      {/* {fileData && (
-        <div className="mt-4 p-4 border rounded shadow-md w-full">
-          <h3 className="text-lg font-bold mb-2 text-center">Uploaded File Details</h3>
-          <ul>
-            {Object.entries(fileData).map(([key, value]) => (
-              <li key={key}><strong>{key}:</strong> {value}</li>
-            ))}
-          </ul>
-        </div>
-      )} */}
-      <p>{message}</p>
+      <section className="relative flex flex-col items-center justify-center pb-0 pt-3 md:pt-5 px-8 md:px-16">
+        <p className="text-center text-lg font-semibold text-green-600 mb-4">{message}</p>
+
+        {uploadedInvoiceData.length > 0 && (
+          <div className="mt-2 border rounded shadow-md w-full p-8">
+            <h3 className="text-xl font-bold text-center mb-6">Uploaded Invoice Data</h3>
+            <table className="table-auto w-full border-collapse">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="border px-6 py-3 text-left">Invoice ID</th>
+                  <th className="border px-6 py-3 text-left">Invoice Tax</th>
+                  <th className="border px-6 py-3 text-left">Invoice Date</th>
+                  <th className="border px-6 py-3 text-left">Total Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                {uploadedInvoiceData.map((invoice, index) => (
+                  <tr key={index} className="hover:bg-gray-50">
+                    <td className="border px-6 py-3 text-center">{invoice.invoice_number}</td>
+                    <td className="border px-6 py-3 text-center">{invoice.invoice_tax}</td>
+                    <td className="border px-6 py-3 text-center">{invoice.invoice_date}</td>
+                    <td className="border px-6 py-3 text-center">{invoice.total_amount}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {uploadedCustomerData.length > 0 && (
+          <div className="mt-2 border rounded shadow-md w-full p-8">
+            <h3 className="text-xl font-bold text-center mb-6">Uploaded Customer Data</h3>
+            <table className="table-auto w-full border-collapse">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="border px-6 py-3 text-left">Name</th>
+                  <th className="border px-6 py-3 text-left">Phone Number</th>
+                  <th className="border px-6 py-3 text-left">Total Amount Purchased</th>
+                </tr>
+              </thead>
+              <tbody>
+                {uploadedCustomerData.map((customer, index) => (
+                  <tr key={index} className="hover:bg-gray-50">
+                    <td className="border px-6 py-3 text-center">{customer.customer_name}</td>
+                    <td className="border px-6 py-3 text-center">{customer.phone_number}</td>
+                    <td className="border px-6 py-3 text-center">{customer.totalPurAmnt}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {uploadedProductData.length > 0 && (
+          <div className="mt-2 border rounded shadow-md w-full p-8">
+            <h3 className="text-xl font-bold text-center mb-6">Uploaded Product Data</h3>
+            <table className="table-auto w-full border-collapse">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="border px-6 py-3 text-left">Product Name</th>
+                  <th className="border px-6 py-3 text-left">Quantity</th>
+                  <th className="border px-6 py-3 text-left">Unit Price</th>
+                  <th className="border px-6 py-3 text-left">Price with Tax</th>
+                </tr>
+              </thead>
+              <tbody>
+                {uploadedProductData.map((product, index) => (
+                  <tr key={index} className="hover:bg-gray-50">
+                    <td className="border px-6 py-3 text-center">{product.product_name}</td>
+                    <td className="border px-6 py-3 text-center">{product.quantity}</td>
+                    <td className="border px-6 py-3 text-center">{product.item_price}</td>
+                    <td className="border px-6 py-3 text-center">{product.taxable_value}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
+
     </section>
   );
 };

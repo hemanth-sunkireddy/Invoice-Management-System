@@ -11,9 +11,11 @@
 - **Live link:** [Backend on Vercel](https://swipe-invoice-management.vercel.app/)  
 
 ## Database
-- **Database:** MongoDB  
-- **Data Extraction:** Utilizes the **Google Gemini API** to extract structured data from uploaded files, including invoices in PDF, Image, Excel formats.  
+- **Database:** MongoDB
 
+## AI Data Extraction
+- **Data Extraction:** Utilizes the **Google Gemini API** to extract structured data from uploaded files, including invoices in PDF, Image, Excel formats.
+> Please check Data Extraction docs for more details: [Data Extraction Docs](https://github.com/hemanth-sunkireddy/Swipe-Invoice-Management/wiki/AI-Data-Extraction)
 ---
 
 ## Running the Project Locally
@@ -35,27 +37,10 @@ Follow these steps to set up and run the project on your local machine:
 2. **Navigate to the project directory:**
    ```bash
    cd Swipe-Invoice-Management
-3. **Setup the frontend:**
-```
-cd frontend
-npm install
-npm run dev
-```
 
-4. **Open link in browser:**
-`
-http://localhost:3000
-`
+3. To setup frontend, please visit frontend docs: [Frontend README](frontend/README.md)
+4. To setup backend, please visit Backend docs: [Backend README](backend/README.md)
 
-5. **Configure environment variables**
-  * Add .env file in backend folder and add required keys (check .env.example)
 
-6. **setup backend:**
-```
-cd ../backend
-npm install
-npm run start
-```
-* Backend runs on 4000 port
 
 

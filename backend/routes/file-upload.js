@@ -29,6 +29,7 @@ router.post('/', upload.single('file'), async (req, res) => {
     const result = await extractInvoice(model, base64Data, mimeType, base64Data);
     const productData = [];
     const customerData = [];
+    const invoiceData = [];
 
     if (mimeType === 'application/pdf' || mimeType === 'image/jpeg') {
       const {
@@ -38,18 +39,23 @@ router.post('/', upload.single('file'), async (req, res) => {
         total_amount = '',
         consignee_name,
         consignee_mobile_number,
+        CGST,
+        SGST,
+        IGST,
         items = [],
       } = result;
 
-      const invoiceData = {
+      const invoiceEntry = {
         invoice_number,
         invoice_date,
         invoice_tax,
         total_amount,
-        CGST: result.CGST ? Object.entries(result.CGST) : [],
-        SGST: result.SGST ? Object.entries(result.SGST) : [],
-        IGST: result.IGST ? Object.entries(result.IGST) : [],
+        CGST: Object.entries(CGST),
+        SGST: Object.entries(SGST),
+        IGST: Object.entries(IGST),
       };
+
+      invoiceData.push(invoiceEntry);
 
       const customerDataEntry = {
         customer_name: consignee_name,
@@ -58,7 +64,7 @@ router.post('/', upload.single('file'), async (req, res) => {
       };
 
       // Insert the invoice, customer and product data
-      const invoiceUpdateStatus = await insertInvoice(invoiceData);
+      const invoiceUpdateStatus = await insertInvoice(invoiceEntry);
       const customerStatus = await updateCustomer(customerDataEntry);
       const productUpdates = await Promise.all(
         items.map(item =>
@@ -142,16 +148,19 @@ router.post('/', upload.single('file'), async (req, res) => {
         customerData.push(customerDataEntry);
       }
     }
-    // console.log(productData);
+    // console.log("Product Data: ", productData);
+    // console.log("Customer Data: ", customerData);
+    // console.log("Invoice Data: ", invoiceData);
 
     // Send the final response with processed data
     res.json({
       message: 'File upload and processing successful',
       productData,
       customerData,
+      invoiceData
     });
   } catch (error) {
-    // console.error('Error processing request:', error);
+    console.error('Error processing request:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });

@@ -1,8 +1,8 @@
 export interface Invoice {
-    invoice_num: number,
+    invoice_number: number,
     invoice_date: string,
     invoice_tax: string,
-    total_amount: string,
+    total_amount: number,
 }
 
 export interface Customers {

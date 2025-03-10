@@ -2,73 +2,87 @@
 import type { Invoice } from "@/types";
 import { backendURL_Invoices } from "../../../config";
 import { useEffect, useState } from "react";
-import Link from "next/link";
-
 
 const Invoice: React.FC = () => {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
-  const [errorText, setErrorText] = useState('');
-  console.log(errorText);
-  const fetchInvoices = async () =>{
+  const [serverMessage, setServerMessage] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [networkError, setNetworkError] = useState(false);
+
+  const fetchInvoices = async () => {
     try {
       const server_response = await fetch(backendURL_Invoices);
       if (!server_response.ok) {
-        throw new Error(`Error: ${server_response.statusText}`);
+        const result = await server_response.json();
+        throw new Error(result.message || 'Failed to fetch invoices');
       }
-      const data: Invoice[] = await server_response.json();
-      setInvoices(data);
-    } catch (error) {
-      if (error instanceof Error) {
-        setErrorText(error.message);
+  
+      const result = await server_response.json();
+  
+      if (result.data.length === 0) {
+        setServerMessage(result.message || 'No invoices found');
       } else {
-        setErrorText('Internal Server Error');
+        setInvoices(result.data);
       }
+    } catch (error) {
+      if (error instanceof TypeError) {
+        setError('Network error: Please check your internet connection.');
+        setServerMessage('Network error: Please check your internet connection.');
+        setNetworkError(true);
+      } else if (error instanceof Error) {
+        setError(error.message);
+        setServerMessage(error.message);
+      } else {
+        setError('Internal Server Error');
+        setServerMessage('Internal Server Error');
+      }
+    } finally {
+      setLoading(false);
     }
   }
-
   
-  useEffect(
-    () =>{
-     fetchInvoices()
-    }, []
-  )
+  useEffect(() => {
+    fetchInvoices();
+  }, []);
 
   return (
-    <section className="flex items-center justify-center pb-20 pt-32 md:pt-40 px-5">
-      <div className="text-center">
-        <p className="mb-10 pb-10 text-center font-bold flex">Invoice Records</p>
+    <section className="flex flex-col items-center justify-center pb-20 pt-32 md:pt-40 px-5">
+      <div className="text-center mb-10">
+        <p className="text-2xl font-bold">Invoice Records</p>
+        {loading ? (
+          <p className="text-blue-500">Loading...</p>
+        ) : networkError ? (
+          <p className="text-red-500">Network error: Please check your internet connection.</p>
+        ) : (
+          <p className={error ? "text-red-500" : "text-black"}>{serverMessage}</p>
+        )}
       </div>
-      <hr />
-      <table className="table-auto relative mt-20 pt-10">
-        <thead>
-          <tr>
-            <th>Invoice Number</th>
-            <th>Invoice Tax</th>
-            <th>Total Amount</th>
-            <th>Invoice Date</th>
-            <th>More Details</th>
-          </tr>
-        </thead>
-        <tbody>
-          {invoices.length > 0 ? (
-            invoices.map((invoice) => (
-              <tr key={invoice.invoice_num}>
-                <td className="border px-4 py-2">{invoice.invoice_num}</td>
-                <td className="border px-4 py-2">{invoice.total_amount}</td>
-                <td className="border px-4 py-2">{invoice.invoice_tax}</td>
-                <td className="border px-4 py-2">{invoice.invoice_date}</td>
-                <td className="border px-4 py-2"><Link href={`/invoice-detail?invoice_id=${invoice.invoice_num}`}>
-                    More Details
-                  </Link></td>
+      
+      {!loading && !networkError && invoices.length > 0 && (
+        <div className="w-full max-w-4xl">
+          <table className="table-auto w-full border-collapse border border-gray-300 shadow-lg rounded-lg">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="border px-4 py-2 text-left text-sm font-semibold text-gray-700">Invoice Number</th>
+                <th className="border px-4 py-2 text-left text-sm font-semibold text-gray-700">Invoice Date</th>
+                <th className="border px-4 py-2 text-left text-sm font-semibold text-gray-700">Invoice Tax</th>
+                <th className="border px-4 py-2 text-left text-sm font-semibold text-gray-700">Total Amount</th>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan={7} className="text-center py-4">Empty Data from server</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            </thead>
+            <tbody>
+              {invoices.map((invoice) => (
+                <tr key={invoice.invoice_number} className="hover:bg-gray-50">
+                  <td className="border px-4 py-2 text-gray-800">{invoice.invoice_number}</td>
+                  <td className="border px-4 py-2 text-gray-800">{invoice.invoice_date}</td>
+                  <td className="border px-4 py-2 text-gray-800">{invoice.invoice_tax}</td>
+                  <td className="border px-4 py-2 text-gray-800">{invoice.total_amount}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </section>
   );
 };
