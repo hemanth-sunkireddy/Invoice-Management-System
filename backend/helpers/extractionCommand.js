@@ -70,7 +70,7 @@ const ImageExtractionCommand =
 `;
 
 const xlsxJsonExtractionCommand = `
-  Extract and return a structured JSON object with the following format:
+  Extract and return only a structured JSON object with the following format without NOTE or any text:
 
   {
     "invoices": [
@@ -110,6 +110,7 @@ const xlsxJsonExtractionCommand = `
     - discount: Discount or any relevant discount value (if applicable, else set as 0).
 
   Return the structured JSON with each invoice containing the necessary details, including customer and product information, total amount, and tax breakdown.
+  Return a valid structured data only.
 `;
 
 

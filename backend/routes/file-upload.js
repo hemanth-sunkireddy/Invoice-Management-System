@@ -72,9 +72,9 @@ router.post('/', upload.single('file'), async (req, res) => {
         )
       );
 
-      console.log("Invoice Update Status: ", invoiceUpdateStatus);
-      console.log("Customer Status: ", customerStatus);
-      console.log("Product Update Status: ", productUpdates);
+      // console.log("Invoice Update Status: ", invoiceUpdateStatus);
+      // console.log("Customer Status: ", customerStatus);
+      // console.log("Product Update Status: ", productUpdates);
 
       // Set the response data
       productData.push(...items);
@@ -116,7 +116,9 @@ router.post('/', upload.single('file'), async (req, res) => {
 
         // Insert the invoice and update customer data
         await insertInvoice(invoiceData); 
-        console.log(invoiceData);
+        // console.log(invoiceData);
+        // console.log(customerDataEntry);
+       
         await updateCustomer(customerDataEntry);
 
         for (let item of items) {
@@ -140,6 +142,7 @@ router.post('/', upload.single('file'), async (req, res) => {
         customerData.push(customerDataEntry);
       }
     }
+    // console.log(productData);
 
     // Send the final response with processed data
     res.json({
@@ -148,7 +151,7 @@ router.post('/', upload.single('file'), async (req, res) => {
       customerData,
     });
   } catch (error) {
-    console.error('Error processing request:', error);
+    // console.error('Error processing request:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });

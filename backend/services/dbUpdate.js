@@ -3,7 +3,7 @@ const { invoicesCollection, productsCollection, customersCollection } = require(
 const insertInvoice = async (fileData) => {
   try {
     const result = await invoicesCollection.insertOne(fileData);
-    console.log('Invoice saved successfully with ID:', result.insertedId);
+    // console.log('Invoice saved successfully with ID:', result.insertedId);
   } catch (error) {
     console.error('Error saving invoice:', error.message);
     throw new Error('Failed to insert invoice');
