@@ -1,16 +1,23 @@
 # Swipe Backend
 
-* Using Express.js and deloyed in Vercel
+* Using Express.js and deployed on Vercel
 
-> Server Link: https://swipe-backend-hemanthsunkireddys-projects.vercel.app/
+> **Server Link:** [Swipe Backend](https://swipe-backend-hemanthsunkireddys-projects.vercel.app/)
 
+---
 
-1. **Configure environment variables**
-  * Add .env file in backend folder and add required keys (check .env.example)
+## 1. Configure environment variables
+
+Create a `.env` file in the `backend` folder and add the following keys:
+
+```plaintext
+GEMINI_API=string
+MONGO_STRING=string
+```
 
 2. **setup backend:**
 ```
-cd ../backend
+cd backend
 npm install
 npm run start
 ```
