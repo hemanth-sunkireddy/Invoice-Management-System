@@ -13,6 +13,7 @@ export interface Customers {
     total_amount: string,
     invoice_number: string,
     invoice_date: string,
+    updateStatus: string,
 }
 
 export interface Products {

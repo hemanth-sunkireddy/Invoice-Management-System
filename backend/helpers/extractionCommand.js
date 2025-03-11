@@ -77,6 +77,7 @@ const xlsxJsonExtractionCommand = `
         "invoice_number": null,
         "invoice_date": null,
         "customer_name": null,
+        "invoice_tax": null,
         "customer_mobile_number": null,
         "CGST": null,
         "SGST": null,
@@ -99,8 +100,8 @@ const xlsxJsonExtractionCommand = `
   1. Extract unique invoice details (based on invoice number).
   2. For each unique invoice, retrieve the corresponding invoice date from the first row.
   3. For each invoice, gather customer information: customer name from party name, and customer_mobile_number from phone_number.
-  4. For each invoice, calculate the total amount by summing the Price with Taxfor each product.
-  5. CGST, SGST, and IGST are the same for the entire invoice file, so extract the values and add them to each invoice.
+  4. For each invoice, calculate the total amount by summing the Price with Tax After Discount if exists or Price with Tax for each product.
+  5. For each invoice, calculate invoice tax.
   6. For each invoice, list all products with the following details:
     - product_name: Extracted from the Product Name column.
     - quantity: Extracted from the Qty column.
@@ -108,7 +109,7 @@ const xlsxJsonExtractionCommand = `
     - tax: Extracted from the Tax (%) column.
     - discount: Discount or any relevant discount value (if applicable, else set as 0).
 
-  Return the structured JSON with each invoice containing the necessary details, including customer and product information, total amount, CGST, SGST and IGST.
+  Return the structured JSON with each invoice containing the necessary details, including customer and product information, total amount, invoice_tax.
   Return a valid structured data only.
 `;
 

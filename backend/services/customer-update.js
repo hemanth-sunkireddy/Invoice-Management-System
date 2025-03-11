@@ -2,6 +2,9 @@ const { customersCollection } = require('../config/mongodb');
 
 const insertOrUpdateCustomer = async (customer) => {
     try {
+        if (!customer.customer_name) {
+            return 'Customer name is missing. Skipping database update.';
+        }
         await customersCollection.insertOne(customer);
         return 'Successfully added a new customer record.';
     } catch (error) {

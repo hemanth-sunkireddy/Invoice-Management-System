@@ -33,7 +33,7 @@ const extractInvoice = async (model, fileBuffer, mimeType, fileData = null) => {
     ]);
     let summary = result.response.text().trim();
 
-    console.log(summary);
+    // console.log(summary);
     summary = cleanJsonString(summary);
 
     try {
@@ -68,27 +68,27 @@ const extractInvoice = async (model, fileBuffer, mimeType, fileData = null) => {
 
     }
     else{
-      const joinValues = (value) => typeof value === 'string' ? parseFloat(value.replace(/₹|,|\./g, '').trim()) || 0 : 0;
 
       let invoice_tax = 0;
       
-      if (Array.isArray(parsedResult.invoices)) {
-        parsedResult.invoices.forEach((invoice) => {
-          const cgstTotal = joinValues(invoice.CGST);
-          const sgstTotal = joinValues(invoice.SGST);
-          const igstTotal = joinValues(invoice.IGST);
+      // if (Array.isArray(parsedResult.invoices)) {
+      //   parsedResult.invoices.forEach((invoice) => {
+      //     // console.log(invoice.CGST);
+      //     const cgstTotal = parseFloat(invoice.CGST.replace(/,/g, ''));
+      //     const igstTotal = parseFloat(invoice.IGST.replace(/,/g, ''));
+      //     const sgstTotal = parseFloat(invoice.SGST.replace(/,/g, ''));
       
-          console.log("CGST TOTAL: ", cgstTotal);
-          console.log("SGST Total: ", sgstTotal);
-          console.log("IGST total: ", igstTotal);
+      //     console.log("CGST TOTAL: ", cgstTotal);
+      //     console.log("SGST Total: ", sgstTotal);
+      //     console.log("IGST total: ", igstTotal);
       
-          invoice.CGST = { "total per": cgstTotal };
-          invoice.SGST = { "total per": sgstTotal };
-          invoice.IGST = { "total per": igstTotal };
-          invoice_tax += cgstTotal + sgstTotal + igstTotal;
-          invoice.invoice_tax = invoice_tax
-        });
-      }
+      //     // nvoice.CGST = { "total per": cgstTotal };
+      //     // invoice.SGST = { "total per": sgstTotal };
+      //     // invoice.IGST = { "total per": igstTotal };
+      //     invoice_tax += cgstTotal + sgstTotal + igstTotal;
+      //     invoice.invoice_tax = invoice_tax
+      //   });
+      // }
 
     }
 
@@ -99,7 +99,7 @@ const extractInvoice = async (model, fileBuffer, mimeType, fileData = null) => {
         });
       }
     }
-
+    console.log(parsedResult);
 
     return parsedResult;
   } catch (error) {

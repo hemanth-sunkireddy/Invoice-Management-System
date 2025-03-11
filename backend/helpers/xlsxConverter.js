@@ -42,7 +42,7 @@ const convertXlsxToCsv = (fileBuffer) => {
 
   const filteredSheet = xlsx.utils.json_to_sheet(nonEmptyRows);
   const csvData = xlsx.utils.sheet_to_csv(filteredSheet);
-
+  // console.log(csvData);
   const base64Data = Buffer.from(csvData, 'utf-8').toString('base64');
   return { csvData, base64Data };
 };

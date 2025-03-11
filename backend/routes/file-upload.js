@@ -69,7 +69,8 @@ router.post('/', upload.single('file'), async (req, res) => {
       const mongodb_response = await insertOrUpdateInvoice(invoiceEntry);
       invoiceEntry.updateStatus = mongodb_response;
       invoiceData.push(invoiceEntry);
-      const customerStatus = await insertOrUpdateCustomer(customerDataEntry);
+      const mongodbCustomerUpdateStatus = await insertOrUpdateCustomer(customerDataEntry);
+      customerDataEntry.updateStatus = mongodbCustomerUpdateStatus;
       const productUpdates = await Promise.all(
         items.map(item =>
           updateProduct({
@@ -111,19 +112,23 @@ router.post('/', upload.single('file'), async (req, res) => {
           SGST: SGST ? Object.entries(SGST) : [],
           IGST: IGST ? Object.entries(IGST) : [],
         };
+        
         const customerDataEntry = {
-          customer_name,
-          customer_mobile_number,
+          customer_name: customer_name,
+          customer_phone: customer_mobile_number,
+          invoice_number,
+          invoice_date,
           total_amount,
         };
+  
 
         const mongodb_response = await insertOrUpdateInvoice(invoiceEntry); 
         invoiceEntry.updateStatus = mongodb_response;
-        console.log(mongodb_response);
+        // console.log(mongodb_response);
         invoiceData.push(invoiceEntry);
        
-        await updateCustomer(customerDataEntry);
-
+        const mongodbCustomerUpdateStatus = await insertOrUpdateCustomer(customerDataEntry);
+        customerDataEntry.updateStatus = mongodbCustomerUpdateStatus;
         for (let item of items) {
           productData.push({
             product_name: item.product_name,
@@ -154,7 +159,7 @@ router.post('/', upload.single('file'), async (req, res) => {
     });
   } catch (error) {
     console.error('Error processing request:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: 'Internal Server Error, Please upload file again or try with other file' });
   }
 });
 

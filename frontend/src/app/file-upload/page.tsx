@@ -30,7 +30,8 @@ const FileUpload: React.FC = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to upload file');
+        const errorResponse = await response.json().catch(() => ({}));
+        throw new Error(errorResponse.message || 'Failed to upload file');
       }
 
       const result = await response.json();
@@ -44,8 +45,8 @@ const FileUpload: React.FC = () => {
       console.error('Error:', error);
       if (error instanceof Error && error.message === 'Failed to fetch') {
         setErrorText('Network error: Unable to connect to the server. Please check your internet connection or backend status.');
-      } else {
-        setErrorText('Internal Server Error');
+      } else{
+        setErrorText("Internal Server Error in extracting data, please upload other file or try again.");
       }
     }
   };
@@ -181,7 +182,7 @@ const FileUpload: React.FC = () => {
                 {uploadedInvoiceData.map((invoice, index) => (
                   <tr key={index} className="hover:bg-gray-50">
                     <td className="border px-6 py-3 text-center">{invoice.invoice_number}</td>
-                    <td className="border px-6 py-3 text-center">{invoice.invoice_tax}</td>
+                    <td className="border px-6 py-3 text-center">{invoice.invoice_tax ? invoice.invoice_tax: "No tax"}</td>
                     <td className="border px-6 py-3 text-center">{invoice.invoice_date}</td>
                     <td className="border px-6 py-3 text-center">{invoice.total_amount}</td>
                     <td className="border px-6 py-3 text-center">{invoice.updateStatus}</td>
@@ -201,17 +202,20 @@ const FileUpload: React.FC = () => {
                   <th className="border px-6 py-3 text-left">Name</th>
                   <th className="border px-6 py-3 text-left">Phone Number</th>
                   <th className="border px-6 py-3 text-left">Total Amount Purchased</th>
+                  <th className="border px-6 py-3 text-left">Update Status</th>
                 </tr>
               </thead>
               <tbody>
                 {uploadedCustomerData.map((customer, index) => (
                   <tr key={index} className="hover:bg-gray-50">
-                    <td className="border px-6 py-3 text-center">{customer.customer_name}</td>
+                    <td className="border px-6 py-3 text-center">
+                      {customer.customer_name ? customer.customer_name : "No customer number for this amount"}
+                    </td>
                     <td className="border px-6 py-3 text-center">
                       {customer.customer_phone ? customer.customer_phone : "No phone number found"}
                     </td>
-
                     <td className="border px-6 py-3 text-center">{customer.total_amount}</td>
+                    <td className="border px-6 py-3 text-center">{customer.updateStatus}</td>
                   </tr>
                 ))}
               </tbody>
