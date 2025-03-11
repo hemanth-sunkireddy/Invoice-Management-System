@@ -43,7 +43,7 @@ const FileUpload: React.FC = () => {
     } catch (error) {
       console.error('Error:', error);
       if (error instanceof Error && error.message === 'Failed to fetch') {
-        setErrorText('Network error: Unable to connect to the server. Please check your internet connection or backend status.');
+        setErrorText('Unable to connect to the server. one possible reason is I used Vercels free plan and request time limit of 60 seconds. Please upload small file size.');
       } else {
         setErrorText("Internal Server Error in extracting data, please upload other file or try again.");
       }
