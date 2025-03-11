@@ -23,6 +23,7 @@ export interface Products {
     tax: string,
     price_with_tax: string,
     discount: number,
+    updateStatus: string,
 }
 export interface FileData {
   fileName: string;

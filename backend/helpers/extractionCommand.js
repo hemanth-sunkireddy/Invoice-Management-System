@@ -89,6 +89,7 @@ const xlsxJsonExtractionCommand = `
             "quantity": null,
             "unit_price": null,
             "tax": null,
+            "price_with_tax: null,
             "discount": null
           }
         ]
@@ -99,8 +100,8 @@ const xlsxJsonExtractionCommand = `
   Steps for generating the JSON:
   1. Extract unique invoice details (based on invoice number).
   2. For each unique invoice, retrieve the corresponding invoice date from the first row.
-  3. For each invoice, gather customer information: customer name from party name, and customer_mobile_number from phone_number.
-  4. For each invoice, calculate the total amount by summing the Price with Tax After Discount if exists or Price with Tax for each product.
+  3. For each invoice, gather customer information: customer name from party name, and customer_mobile_number from phone_number. 
+  4. Calculate total_amount by summing Price with Tax After Discount (if present) or Price with Tax for each product.
   5. For each invoice, calculate invoice tax.
   6. For each invoice, list all products with the following details:
     - product_name: Extracted from the Product Name column.
@@ -108,7 +109,9 @@ const xlsxJsonExtractionCommand = `
     - unit_price: Extracted from the Price with Tax column.
     - tax: Extracted from the Tax (%) column.
     - discount: Discount or any relevant discount value (if applicable, else set as 0).
-
+    - price_with_tax: Total Amount after applying tax
+    If no product_name found for item, then don't add in the item list.
+    - Dont include Shipping Charges, debit card charges and Making charges in the items
   Return the structured JSON with each invoice containing the necessary details, including customer and product information, total amount, invoice_tax.
   Return a valid structured data only.
 `;

@@ -112,42 +112,44 @@ router.post('/', upload.single('file'), async (req, res) => {
           SGST: SGST ? Object.entries(SGST) : [],
           IGST: IGST ? Object.entries(IGST) : [],
         };
-        
-        const customerDataEntry = {
-          customer_name: customer_name,
-          customer_phone: customer_mobile_number,
-          invoice_number,
-          invoice_date,
-          total_amount,
-        };
-  
+        if (customer_name) {
+          const customerDataEntry = {
+            customer_name: customer_name,
+            customer_phone: customer_mobile_number,
+            invoice_number,
+            invoice_date,
+            total_amount,
+          };
+          const mongodbCustomerUpdateStatus = await insertOrUpdateCustomer(customerDataEntry);
+          customerDataEntry.updateStatus = mongodbCustomerUpdateStatus;
 
-        const mongodb_response = await insertOrUpdateInvoice(invoiceEntry); 
+          customerData.push(customerDataEntry);
+        }
+
+
+
+
+        const mongodb_response = await insertOrUpdateInvoice(invoiceEntry);
         invoiceEntry.updateStatus = mongodb_response;
         // console.log(mongodb_response);
         invoiceData.push(invoiceEntry);
-       
-        const mongodbCustomerUpdateStatus = await insertOrUpdateCustomer(customerDataEntry);
-        customerDataEntry.updateStatus = mongodbCustomerUpdateStatus;
-        for (let item of items) {
-          productData.push({
-            product_name: item.product_name,
-            unit_price: item.unit_price,
-            quantity: item.quantity,
-            price_with_tax: item.price_with_tax,
-            tax: item.tax,
-          });
 
-          await updateProduct({
-            product_name: item.product_name,
-            unit_price: item.unit_price,
-            quantity: item.quantity,
-            price_with_tax: item.price_with_tax,
-            tax: item.tax,
-          });
+
+        for (let item of items) {
+          if (item.product_name) {
+            const productDataEntry = {
+              product_name: item.product_name,
+              unit_price: item.unit_price,
+              quantity: item.quantity,
+              price_with_tax: item.price_with_tax,
+              tax: item.tax,
+            };
+            const mongodbProductUpdateStatus = await updateProduct(productDataEntry);
+            productDataEntry.updateStatus = mongodbProductUpdateStatus;
+            productData.push(productDataEntry);
+          }
         }
 
-        customerData.push(customerDataEntry);
       }
     }
 

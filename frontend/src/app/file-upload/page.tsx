@@ -234,6 +234,7 @@ const FileUpload: React.FC = () => {
                   <th className="border px-6 py-3 text-left">Unit Price</th>
                   <th className="border px-6 py-3 text-left">Tax</th>
                   <th className="border px-6 py-3 text-left">Price with Tax</th>
+                  <th className="border px-6 py-3 text-left">Update Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -245,7 +246,10 @@ const FileUpload: React.FC = () => {
                     <td className="border px-6 py-3 text-center">
                       {product.tax ? product.tax : "No Tax"}
                     </td>
-                    <td className="border px-6 py-3 text-center">{product.price_with_tax}</td>
+                    <td className="border px-6 py-3 text-center">
+                      {product.price_with_tax ? product.price_with_tax : "No price with tax found"}
+                    </td>
+                    <td className="border px-6 py-3 text-center">{product.updateStatus}</td>
                   </tr>
                 ))}
               </tbody>

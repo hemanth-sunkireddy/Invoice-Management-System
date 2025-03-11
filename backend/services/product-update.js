@@ -2,6 +2,9 @@ const { productsCollection } = require('../config/mongodb');
 
 const updateProduct = async (product) => {
     try {
+        if (!product.product_name) {
+            return 'Product name is missing. Skipping database update.';
+        }
         await productsCollection.insertOne(product);
         return 'Successfully added a new product record.';
     } catch (error) {
