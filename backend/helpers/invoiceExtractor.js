@@ -67,30 +67,6 @@ const extractInvoice = async (model, fileBuffer, mimeType, fileData = null) => {
     parsedResult.consignee_mobile_number = parsedResult.consignee_mobile_number || parsedResult.customer_mobile_number || null;
 
     }
-    else{
-
-      let invoice_tax = 0;
-      
-      // if (Array.isArray(parsedResult.invoices)) {
-      //   parsedResult.invoices.forEach((invoice) => {
-      //     // console.log(invoice.CGST);
-      //     const cgstTotal = parseFloat(invoice.CGST.replace(/,/g, ''));
-      //     const igstTotal = parseFloat(invoice.IGST.replace(/,/g, ''));
-      //     const sgstTotal = parseFloat(invoice.SGST.replace(/,/g, ''));
-      
-      //     console.log("CGST TOTAL: ", cgstTotal);
-      //     console.log("SGST Total: ", sgstTotal);
-      //     console.log("IGST total: ", igstTotal);
-      
-      //     // nvoice.CGST = { "total per": cgstTotal };
-      //     // invoice.SGST = { "total per": sgstTotal };
-      //     // invoice.IGST = { "total per": igstTotal };
-      //     invoice_tax += cgstTotal + sgstTotal + igstTotal;
-      //     invoice.invoice_tax = invoice_tax
-      //   });
-      // }
-
-    }
 
     if (mimeType.startsWith('image/jpeg')) {
       if (parsedResult.items && Array.isArray(parsedResult.items)) {

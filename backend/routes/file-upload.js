@@ -72,18 +72,20 @@ router.post('/', upload.single('file'), async (req, res) => {
       const mongodbCustomerUpdateStatus = await insertOrUpdateCustomer(customerDataEntry);
       customerDataEntry.updateStatus = mongodbCustomerUpdateStatus;
       const productUpdates = await Promise.all(
-        items.map(item =>
-          updateProduct({
+        items.map(async (item) => {
+          const productDataEntry = {
             product_name: item.product_name,
             unit_price: item.unit_price,
             quantity: item.quantity,
             price_with_tax: item.price_with_tax,
             tax: item.tax,
-          })
-        )
+          };
+          const mongodbProductUpdateStatus = await updateProduct(productDataEntry);
+          productDataEntry.updateStatus = mongodbProductUpdateStatus;
+          return productDataEntry;
+        })
       );
-
-      productData.push(...items);
+      productData.push(...productUpdates);
       customerData.push(customerDataEntry);
     } else {
       const invoices = result.invoices || [];

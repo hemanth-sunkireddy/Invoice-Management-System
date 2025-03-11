@@ -45,7 +45,7 @@ const FileUpload: React.FC = () => {
       console.error('Error:', error);
       if (error instanceof Error && error.message === 'Failed to fetch') {
         setErrorText('Network error: Unable to connect to the server. Please check your internet connection or backend status.');
-      } else{
+      } else {
         setErrorText("Internal Server Error in extracting data, please upload other file or try again.");
       }
     }
@@ -83,28 +83,29 @@ const FileUpload: React.FC = () => {
   };
 
   return (
-    <section className="relative flex flex-col items-center justify-center pb-0 pt-32 md:pt-40">
+    <section className="relative flex flex-col items-center justify-center pb-0 pt-20 md:pt-40">
       <form onSubmit={fileSubmit} className="w-full max-w-4xl">
-        <p className="text-center mb-8 text-lg font-bold">Upload Documents</p>
+        <p className="text-center mb-5 text-lg font-bold">Upload Documents</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 w-full">
           {/* Left Grid - File upload options */}
-          <div className="gap-4 grid grid-cols-1 md:grid-cols-2">
-            <label className="flex items-center gap-2 p-4 bg-blue-500 text-white rounded cursor-pointer">
+          <div className="grid grid-cols-2 gap-4 w-full">
+            {/* First Row: PDF and Image side by side */}
+            <label className="flex items-center gap-2 p-4 bg-blue-500 text-white rounded cursor-pointer justify-center">
               <FaFilePdf /> Upload PDF
               <input type="file" accept="application/pdf" onChange={handleFileChange} className="hidden" />
             </label>
-            <label className="flex items-center gap-2 p-4 bg-blue-500 text-white rounded cursor-pointer">
+            <label className="flex items-center gap-2 p-4 bg-blue-500 text-white rounded cursor-pointer justify-center">
               <FaFileImage /> Upload Image
               <input type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
             </label>
-            <label className="flex items-center gap-2 p-4 bg-blue-500 text-white rounded cursor-pointer">
-              <FaFileExcel /> Upload Excel
-              <input type="file" accept=".xlsx,.xls" onChange={handleFileChange} className="hidden" />
-            </label>
-            <label className="flex items-center gap-2 p-4 bg-blue-500 text-white rounded cursor-pointer">
-              <RiFileExcel2Fill /> Upload Multiple
-              <input type="file" accept=".xlsx,.xls" multiple onChange={handleFileChange} className="hidden" />
-            </label>
+
+            {/* Second Row: Centered Excel button */}
+            <div className="col-span-2 flex justify-center">
+              <label className="flex items-center gap-2 p-4 bg-blue-500 text-white rounded cursor-pointer">
+                <FaFileExcel /> Upload Excel
+                <input type="file" accept=".xlsx,.xls" onChange={handleFileChange} className="hidden" />
+              </label>
+            </div>
           </div>
 
           {/* Right Grid - Content & Upload any file */}
@@ -182,7 +183,7 @@ const FileUpload: React.FC = () => {
                 {uploadedInvoiceData.map((invoice, index) => (
                   <tr key={index} className="hover:bg-gray-50">
                     <td className="border px-6 py-3 text-center">{invoice.invoice_number}</td>
-                    <td className="border px-6 py-3 text-center">{invoice.invoice_tax ? invoice.invoice_tax: "No tax"}</td>
+                    <td className="border px-6 py-3 text-center">{invoice.invoice_tax ? invoice.invoice_tax : "No tax"}</td>
                     <td className="border px-6 py-3 text-center">{invoice.invoice_date}</td>
                     <td className="border px-6 py-3 text-center">{invoice.total_amount}</td>
                     <td className="border px-6 py-3 text-center">{invoice.updateStatus}</td>
