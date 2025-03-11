@@ -106,10 +106,10 @@ const xlsxJsonExtractionCommand = `
   6. For each invoice, list all products with the following details:
     - product_name: Extracted from the Product Name column.
     - quantity: Extracted from the Qty column.
-    - unit_price: Extracted from the Price with Tax column.
+    - unit_price: If Unit Price Column available, Extract from the Unit Price Column. Else Extract from the Item Total Amount Column.
     - tax: Extracted from the Tax (%) column.
     - discount: Discount or any relevant discount value (if applicable, else set as 0).
-    - price_with_tax: Total Amount after applying tax
+    - price_with_tax: If Price with Tax Column available, Extracte from the Price with Tax column. Else, calculate using quantity * unit_price.
     If no product_name found for item, then don't add in the item list.
     - Dont include Shipping Charges, debit card charges and Making charges in the items
   Return the structured JSON with each invoice containing the necessary details, including customer and product information, total amount, invoice_tax.

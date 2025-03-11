@@ -222,7 +222,7 @@ const FileUpload: React.FC = () => {
             </table>
           </div>
         )}
-
+        {message && uploadedProductData.length == 0 && (<p className="text-center py-4 font-bold">No products found in the file</p>)}
         {uploadedProductData.length > 0 && (
           <div className="mt-2 border rounded shadow-md w-full p-8">
             <h3 className="text-xl font-bold text-center mb-6">Uploaded Product Data</h3>
@@ -256,6 +256,7 @@ const FileUpload: React.FC = () => {
             </table>
           </div>
         )}
+        {message && uploadedCustomerData.length == 0 && (<p className="text-center py-4 font-bold">No customers found in the file</p>)}
       </section>
 
     </section>
