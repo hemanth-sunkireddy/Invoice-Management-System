@@ -2,7 +2,7 @@
 
 * Using Express.js and deployed on Vercel
 
-> **Server Link:** [Swipe Backend](https://swipe-backend-hemanthsunkireddys-projects.vercel.app/)
+> **Server Link:** [Swipe Backend](https://swipe-invoice-management.vercel.app/)
 
 ---
 
