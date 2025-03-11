@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { backendURL_FileUpload } from "../../../config";
 import { FaFilePdf, FaFileImage, FaFileExcel, FaFile } from "react-icons/fa";
-import { RiFileExcel2Fill } from "react-icons/ri";
 import type { Invoice } from "@/types";
 import type { Customers } from "@/types";
 import type { Products } from "@/types";

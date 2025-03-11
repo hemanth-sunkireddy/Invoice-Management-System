@@ -9,9 +9,6 @@ const productsRouter = require('../routes/products.js');
 const customersRouter = require('../routes/customers.js');
 const homeRouter = require('../routes/home.js');
 
-// Mongo Connection
-const { checkMongoConnection } = require("../config/mongodb.js");
-
 // CORS options
 const corsOptions = {
   origin: ["https://swipe-invoice-management-frontend.vercel.app", "http://localhost:3000"],
@@ -21,9 +18,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
-
-// Apply MongoDB connection check to all routes
-// app.use(checkMongoConnection);
 
 
 // Routes

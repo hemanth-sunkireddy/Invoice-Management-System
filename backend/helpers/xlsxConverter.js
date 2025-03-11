@@ -1,6 +1,5 @@
 const xlsx = require('xlsx');
 
-// Helper function to trim leading and trailing spaces from a string
 const trimString = (str) => {
   if (typeof str === 'string') {
     return str.trim();
@@ -17,12 +16,9 @@ const convertXlsxToCsv = (fileBuffer) => {
     throw new Error('No sheets found in the uploaded XLSX file.');
   }
 
-  // Convert sheet to JSON and filter out empty rows
   const jsonData = xlsx.utils.sheet_to_json(sheet, { defval: null });
 
-  // Format each row by trimming spaces from every cell and ensure it's valid JSON
   const formattedData = jsonData.map(row => {
-    // Trim spaces from each value in the row dynamically (no predefined fields)
     const trimmedRow = Object.keys(row).reduce((acc, key) => {
       acc[key] = trimString(row[key]);
       return acc;
@@ -31,7 +27,6 @@ const convertXlsxToCsv = (fileBuffer) => {
     return trimmedRow;
   });
 
-  // Filter out rows with only empty values
   const nonEmptyRows = formattedData.filter(row => 
     Object.values(row).some(cell => cell !== null && cell !== "")
   );
@@ -42,7 +37,6 @@ const convertXlsxToCsv = (fileBuffer) => {
 
   const filteredSheet = xlsx.utils.json_to_sheet(nonEmptyRows);
   const csvData = xlsx.utils.sheet_to_csv(filteredSheet);
-  // console.log(csvData);
   const base64Data = Buffer.from(csvData, 'utf-8').toString('base64');
   return { csvData, base64Data };
 };
