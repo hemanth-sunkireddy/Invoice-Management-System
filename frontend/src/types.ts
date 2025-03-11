@@ -24,6 +24,7 @@ export interface Products {
     price_with_tax: string,
     discount: number,
     updateStatus: string,
+    invoice_number: string,
 }
 export interface FileData {
   fileName: string;

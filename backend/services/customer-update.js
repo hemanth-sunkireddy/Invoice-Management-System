@@ -5,6 +5,13 @@ const insertOrUpdateCustomer = async (customer) => {
         if (!customer.customer_name) {
             return 'Customer name is missing. Skipping database update.';
         }
+        const existingCustomer = await customersCollection.findOne({
+            customer_name: customer.customer_name,
+            invoice_number: customer.invoice_number
+        });
+        if (existingCustomer) {
+            return 'Customer with same invoice already exists. Updating present details to existing record.';
+        }
         await customersCollection.insertOne(customer);
         return 'Successfully added a new customer record.';
     } catch (error) {

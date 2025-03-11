@@ -80,6 +80,8 @@ router.post('/', upload.single('file'), async (req, res) => {
             quantity: item.quantity,
             price_with_tax: item.price_with_tax,
             tax: item.tax,
+            discount: item.discount,
+            invoice_number: invoice_number
           };
           const mongodbProductUpdateStatus = await updateProduct(productDataEntry);
           productDataEntry.updateStatus = mongodbProductUpdateStatus;
@@ -146,6 +148,8 @@ router.post('/', upload.single('file'), async (req, res) => {
               unit_price: item.unit_price,
               quantity: item.quantity,
               price_with_tax: item.price_with_tax,
+              discount: item.discount,
+              invoice_number: invoice_number,
               tax: item.tax,
             };
             const mongodbProductUpdateStatus = await updateProduct(productDataEntry);

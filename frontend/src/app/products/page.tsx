@@ -74,6 +74,8 @@ const Products: React.FC = () => {
                 <th className="border px-4 py-2 text-left whitespace-nowrap text-sm font-semibold text-gray-700">Item Price</th>
                 <th className="border px-4 py-2 text-left whitespace-nowrap text-sm font-semibold text-gray-700">Tax</th>
                 <th className="border px-4 py-2 text-left whitespace-nowrap text-sm font-semibold text-gray-700">Price with Tax</th>
+                <th className="border px-4 py-2 text-left whitespace-nowrap text-sm font-semibold text-gray-700">Invoice Number</th>
+                {/* <th className="border px-4 py-2 text-left whitespace-nowrap text-sm font-semibold text-gray-700">Discount</th> */}
               </tr>
             </thead>
             <tbody>
@@ -87,6 +89,8 @@ const Products: React.FC = () => {
                       {product.tax ? product.tax : "No Tax"}
                     </td>
                     <td className="border px-4 py-2 text-gray-800">{product.price_with_tax ? product.price_with_tax: "No Price with Tax Found"}</td>
+                    <td className="border px-4 py-2 text-gray-800">{product.invoice_number}</td>
+                    {/* <td className="border px-4 py-2 text-gray-800">{product.discount? product.discount : "No Discount"}</td> */}
                   </tr>
                 ))
               ) : (
