@@ -8,6 +8,7 @@ const fileUploadRouter = require('../routes/file-upload.js');
 const productsRouter = require('../routes/products.js');
 const customersRouter = require('../routes/customers.js');
 const homeRouter = require('../routes/home.js');
+const customerUpdate = require('../routes/customer-update.js');
 
 // CORS options
 const corsOptions = {
@@ -26,6 +27,7 @@ app.use('/file-upload', fileUploadRouter);
 app.use('/products', productsRouter);
 app.use('/customers', customersRouter);
 app.use("/", homeRouter);
+app.use("/customer-update", customerUpdate);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server ready on port ${PORT}.`));

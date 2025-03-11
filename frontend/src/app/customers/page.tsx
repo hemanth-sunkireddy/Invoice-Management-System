@@ -2,6 +2,7 @@
 import type { Customers } from "@/types";
 import { backendURL_Customers } from "../../../config";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 const Customers: React.FC = () => {
   const [customers, setCustomers] = useState<Customers[]>([]);
@@ -54,16 +55,21 @@ const Customers: React.FC = () => {
 
   return (
     <section className="flex flex-col items-center justify-center pb-20 pt-32 md:pt-40 px-5">
-      <div className="text-center mb-10">
+      <div className="grid grid-cols-2 gap-4 items-center mb-10 text-center">
         <p className="text-2xl font-bold">Customers Records</p>
-        {loading ? (
-          <p className="text-blue-500">Loading...</p>
-        ) : networkError ? (
-          <p className="text-red-500">{error}</p>
-        ) : (
-          <p className={error ? "text-red-500" : "text-black"}>{serverMessage}</p>
-        )}
+        <div className="flex flex-col items-center">
+          <p className=" text-black mb-2 ">Missing phone numbers? No worries — update here!</p>
+          <Link href="/customer-update" className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 text-lg">Update Customer</Link>
+        </div>
       </div>
+
+      {loading ? (
+        <p className="text-blue-500">Loading...</p>
+      ) : networkError ? (
+        <p className="text-red-500">{error}</p>
+      ) : (
+        <p className={error ? "text-red-500" : "text-black"}>{serverMessage}</p>
+      )}
 
       {!loading && customers.length > 0 && (
         <div className="w-full max-w-4xl">
