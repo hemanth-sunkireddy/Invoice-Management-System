@@ -5,7 +5,6 @@ const pdfExtractionCommand =
   - consignee_mobile_number: Mobile number of the consignee (if available)
   - consignee_address: Address of the consignee (if available)
   - customer_name: Name of the customer
-  - customer_mobile_number: Mobile number of the customer
   - customer_total_purchase_amount: Total purchase amount of the customer
   - invoice_number: Unique identifier for the invoice
   - invoice_date: Date of the invoice in DD-MM-YYYY format

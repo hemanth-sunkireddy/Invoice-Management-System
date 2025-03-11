@@ -65,15 +65,15 @@ const Products: React.FC = () => {
         )}
       </div>
       {!loading && products.length > 0 && (
-        <div className="w-full max-w-4xl">
+        <div className="overflow-x-auto">
           <table className="table-auto w-full border-collapse border border-gray-300 shadow-lg rounded-lg">
             <thead className="bg-gray-100">
               <tr>
-                <th className="border px-4 py-2 text-left text-sm font-semibold text-gray-700">Product Name</th>
-                <th className="border px-4 py-2 text-left text-sm font-semibold text-gray-700">Quantity</th>
-                <th className="border px-4 py-2 text-left text-sm font-semibold text-gray-700">Item Price</th>
-                <th className="border px-4 py-2 text-left text-sm font-semibold text-gray-700">Tax</th>
-                <th className="border px-4 py-2 text-left text-sm font-semibold text-gray-700">Price with Tax</th>
+                <th className="border px-4 py-2 text-left whitespace-nowrap text-sm font-semibold text-gray-700">Product Name</th>
+                <th className="border px-4 py-2 text-left whitespace-nowrap text-sm font-semibold text-gray-700">Quantity</th>
+                <th className="border px-4 py-2 text-left whitespace-nowrap text-sm font-semibold text-gray-700">Item Price</th>
+                <th className="border px-4 py-2 text-left whitespace-nowrap text-sm font-semibold text-gray-700">Tax</th>
+                <th className="border px-4 py-2 text-left whitespace-nowrap text-sm font-semibold text-gray-700">Price with Tax</th>
               </tr>
             </thead>
             <tbody>
@@ -86,7 +86,7 @@ const Products: React.FC = () => {
                     <td className="border px-6 py-3 text-center">
                       {product.tax ? product.tax : "No Tax"}
                     </td>
-                    <td className="border px-4 py-2 text-gray-800">{product.price_with_tax}</td>
+                    <td className="border px-4 py-2 text-gray-800">{product.price_with_tax ? product.price_with_tax: "No Price with Tax Found"}</td>
                   </tr>
                 ))
               ) : (

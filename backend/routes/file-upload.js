@@ -63,6 +63,7 @@ router.post('/', upload.single('file'), async (req, res) => {
         invoice_number,
         invoice_date,
         total_amount,
+        invoice_number
       };
 
 
@@ -121,6 +122,7 @@ router.post('/', upload.single('file'), async (req, res) => {
             invoice_number,
             invoice_date,
             total_amount,
+            invoice_number
           };
           const mongodbCustomerUpdateStatus = await insertOrUpdateCustomer(customerDataEntry);
           customerDataEntry.updateStatus = mongodbCustomerUpdateStatus;

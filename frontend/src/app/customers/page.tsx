@@ -73,6 +73,7 @@ const Customers: React.FC = () => {
                 <th className="border px-4 py-2 text-left text-sm font-semibold text-gray-700">Customer Name</th>
                 <th className="border px-4 py-2 text-left text-sm font-semibold text-gray-700">Phone Number</th>
                 <th className="border px-4 py-2 text-left text-sm font-semibold text-gray-700">Total Amount</th>
+                <th className="border px-4 py-2 text-left text-sm font-semibold text-gray-700">Invoice Number</th>
               </tr>
             </thead>
             <tbody>
@@ -82,8 +83,8 @@ const Customers: React.FC = () => {
                   <td className="border px-6 py-3 text-center">
                     {customer.customer_phone ? customer.customer_phone : "No phone number found"}
                   </td>
-
                   <td className="border px-4 py-2 text-gray-800">{customer.total_amount}</td>
+                  <td className="border px-4 py-2 text-gray-800">{customer.invoice_number ? customer.invoice_number : "No Invoice for this customer."}</td>
                 </tr>
               ))}
             </tbody>

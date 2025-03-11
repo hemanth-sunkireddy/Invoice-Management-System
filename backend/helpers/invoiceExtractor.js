@@ -45,16 +45,12 @@ const extractInvoice = async (model, fileBuffer, mimeType, fileData = null) => {
     }
 
     let invoice_tax = 0;
-    if (mimeType === 'application/pdf' || mimeType.startsWith('image/')){
+    if (mimeType === 'application/pdf' || mimeType.startsWith('image/')) {
       ['CGST', 'SGST', 'IGST'].forEach((tax) => {
-        // console.log(typeof parsedResult[tax]);
         if (parsedResult[tax] && typeof parsedResult[tax] === 'object') {
           Object.values(parsedResult[tax]).forEach((value) => {
-            // console.log(typeof value);
-            // console.log(value);
             const cleanedValue = typeof value === 'string' ? value.replace(/₹|,/g, '').trim() : value;
             const numValue = parseFloat(cleanedValue);
-            // console.log(numValue);
             if (!isNaN(numValue)) {
               invoice_tax += numValue;
             }
@@ -62,10 +58,10 @@ const extractInvoice = async (model, fileBuffer, mimeType, fileData = null) => {
         }
       });
 
-    parsedResult.invoice_tax = invoice_tax;
-    parsedResult.consignee_name = parsedResult.consignee_name || parsedResult.customer_name || null;
-    parsedResult.consignee_mobile_number = parsedResult.consignee_mobile_number || parsedResult.customer_mobile_number || null;
-
+      parsedResult.invoice_tax = invoice_tax;
+      if (mimeType.startsWith('image/')) {
+        parsedResult.consignee_name = parsedResult.consignee_name || parsedResult.customer_name || null;
+      }
     }
 
     if (mimeType.startsWith('image/jpeg')) {

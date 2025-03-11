@@ -82,8 +82,8 @@ const Invoice: React.FC = () => {
                 <tr key={invoice.invoice_number} className="hover:bg-gray-50">
                   <td className="border px-4 py-2 text-gray-800">{invoice.invoice_number}</td>
                   <td className="border px-4 py-2 text-gray-800">{invoice.invoice_date}</td>
-                  <td className="border px-4 py-2 text-gray-800">{invoice.invoice_tax}</td>
-                  <td className="border px-4 py-2 text-gray-800">{invoice.total_amount}</td>
+                  <td className="border px-4 py-2 text-gray-800">{invoice.invoice_tax ? invoice.invoice_tax : "No Tax Found"}</td>
+                  <td className="border px-4 py-2 text-gray-800">{invoice.total_amount? invoice.total_amount: "No Total Amount Found"}</td>
                 </tr>
               ))}
             </tbody>
