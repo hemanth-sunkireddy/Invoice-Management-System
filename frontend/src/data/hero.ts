@@ -1,5 +1,5 @@
 export const heroDetails = {
-    heading: 'Simple Billing and Payments App',
-    subheading: 'Create your Invoices, Purchases & Quotations in less than 10 seconds. Share on WhatsApp with payment links and get paid faster!',
-    centerImageSrc: '/images/center-image-home.webp',
+    heading: 'Smart Document & Invoice Management App',
+    subheading: 'Upload PDFs, images, or Excel files — we’ll extract key data using AI and store it securely. Easily manage invoices, customers, and products in one place. Fix missing customer phone numbers with a simple update!',
+    centerImageSrc: '/images/HomePage.png',
 }

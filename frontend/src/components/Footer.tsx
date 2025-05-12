@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
             <div className="max-w-7xl w-full mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10">
                 <div>
                     <Link href="/" className="flex items-center gap-2">
-                        <Image src='/images/swipe-logo.svg' alt="Swipe Logo" width={150} height={150}>
+                        <Image src='/images/expenses.png' alt="Brand Logo" width={70} height={70}>
                         </Image>
                     </Link>
                     <p className="mt-3.5 text-foreground-accent">

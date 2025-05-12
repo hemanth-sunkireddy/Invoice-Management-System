@@ -22,8 +22,8 @@ const Hero: React.FC = () => {
                 <p className="mt-4 text-foreground max-w-lg mx-auto">{heroDetails.subheading}</p>
                 <Image
                     src={heroDetails.centerImageSrc}
-                    width={384}
-                    height={340}
+                    width={1024}
+                    height={1024}
                     quality={100}
                     sizes="(max-width: 768px) 100vw, 384px"
                     priority={true}

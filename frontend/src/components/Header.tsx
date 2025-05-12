@@ -20,7 +20,7 @@ const Header: React.FC = () => {
             <Container className="!px-0">
                 <nav className="shadow-md md:shadow-none bg-white md:bg-transparent mx-auto flex justify-between items-center py-2 px-5 md:py-10">
                     <Link href="/" className="flex items-center gap-2">
-                        <Image src='/images/swipe-logo.svg' alt="Swipe Logo" width={150} height={150}>
+                        <Image src='/images/expenses.png' alt="Brand Icon" width={70} height={70}>
                         </Image>
                     </Link>
 

@@ -1,5 +1,5 @@
 export const siteDetails = {
-    siteName: 'Swipe',
+    siteName: 'Hemanth',
     siteUrl: 'https://swipe-invoice-management-frontend.vercel.app/',
     metadata: {
         title: 'Swipe - Simple Billing and Payments App',
@@ -7,6 +7,6 @@ export const siteDetails = {
     },
     language: 'en-us',
     locale: 'en-US',
-    siteLogo: `images/swipe-logo.svg`,
+    siteLogo: `images/expenses.png`,
 
 }

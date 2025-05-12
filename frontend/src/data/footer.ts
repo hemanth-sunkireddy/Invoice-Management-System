@@ -4,7 +4,7 @@ export const footerDetails: {
     subheading: string;
     quickLinks: IMenuItem[];
 } = {
-    subheading: "Create your Invoices, Purchases & Quotations in less than 10 seconds. Share on WhatsApp with payment links and get paid faster!",
+    subheading: "Upload files like PDFs, images, or Excel sheets and automatically manage invoices, customers, and products. Powered by AI for fast and accurate data extraction.",
     quickLinks: [
         {
             text: "Github Code Link",
