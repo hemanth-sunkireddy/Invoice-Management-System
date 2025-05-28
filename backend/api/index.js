@@ -12,7 +12,7 @@ const customerUpdate = require('../routes/customer-update.js');
 
 // CORS options
 const corsOptions = {
-  origin: ["https://swipe-invoice-management-frontend.vercel.app", "http://localhost:3000"],
+  origin: ["https://swipe-invoice-management-frontend.vercel.app", "http://localhost:3000", "https://invoice-management-system-mu.vercel.app"],
   methods: "GET,POST,PUT,DELETE",
   allowedHeaders: "Content-Type,Authorization",
 };
